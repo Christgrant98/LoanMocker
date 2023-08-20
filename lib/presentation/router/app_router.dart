@@ -1,3 +1,4 @@
+import 'package:cw_bank_credit/presentation/pages/credit_history_page.dart';
 import 'package:cw_bank_credit/presentation/pages/credit_simulator_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,7 @@ import '../pages/registration_page.dart';
 class Routes {
   static const String registrationPage = 'registration';
   static const String loginPage = 'login';
-  static const String testPage = 'test';
+  static const String creditHistoryPage = 'creditHistoryPage';
   static const String creditSimulatorPage = 'creditSimulator';
   static const String creditSimulatorPageResult = 'creditSimulatorPageResult';
 }
@@ -58,6 +59,16 @@ class AppRouter {
                     BlocProvider.value(value: _loanCubit),
                   ],
                   child: const CreditSimulatorPage(),
+                ));
+      case Routes.creditHistoryPage:
+        _navigationCubit.setSelectedIndex(1);
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: _navigationCubit),
+                    BlocProvider.value(value: _loanCubit),
+                  ],
+                  child: const CreditHistoryPage(),
                 ));
       default:
         _navigationCubit.setSelectedIndex(4);

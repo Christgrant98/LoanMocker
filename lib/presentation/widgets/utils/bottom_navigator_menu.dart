@@ -58,7 +58,8 @@ class _BottomNavigatorState extends State<BottomNavigator> {
                   break;
 
                 case 1:
-                  Navigator.pushReplacementNamed(context, Routes.testPage);
+                  Navigator.pushReplacementNamed(
+                      context, Routes.creditHistoryPage);
                   break;
               }
             },

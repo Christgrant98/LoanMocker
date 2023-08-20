@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../data/models/loan.dart';
 import '../layout.dart';
+import '../router/app_router.dart';
 import '../widgets/utils/custom_modal_bottom_sheet.dart';
 import '../widgets/utils/settings_button.dart';
 import '../widgets/utils/text_view.dart';
@@ -19,6 +20,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Loan? loan = context.watch<LoanCubit>().state.loan;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return Layout(
@@ -43,7 +45,11 @@ class CreditSimulationResultsPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   CustomButton(
                     onPressed: () {
-                      _buildModalLoanPreview(context);
+                      context.read<LoanCubit>().saveLoanData(loan!);
+
+                      Navigator.pushReplacementNamed(
+                          context, Routes.creditHistoryPage);
+                      // _buildModalLoanPreview(context);
                     },
                     text: 'Guardar cotizacion',
                     isAppColor: false,
@@ -107,7 +113,10 @@ class CreditSimulationResultsPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              CustomButton(onPressed: () {}, text: 'Guardar'),
+              CustomButton(
+                text: 'Guardar',
+                onPressed: () {},
+              ),
               const SizedBox(height: 10),
               CustomButton(
                 text: 'Cancelar',
