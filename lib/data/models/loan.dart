@@ -27,6 +27,4 @@ class Loan {
   double calculateTotalLoan() {
     return calculateInstallment() * loanTerm;
   }
-
-  // Crédito -> (Salario * 7) / 15%
 }

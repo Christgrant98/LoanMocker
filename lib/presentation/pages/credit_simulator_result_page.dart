@@ -94,10 +94,23 @@ class CreditSimulationResultsPage extends StatelessWidget {
     return BlocBuilder<LoanCubit, LoanState>(
       builder: (context, state) {
         if (state.loan == null) return Container();
-        return Table(
-          border: TableBorder.all(),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: _buildRows(state.loan!),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Table(
+              border: const TableBorder(
+                  top: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 220, 224, 227)),
+                  bottom: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 220, 224, 227)),
+                  horizontalInside: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 220, 224, 227)),
+                  verticalInside: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 220, 224, 227))),
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: _buildRows(state.loan!),
+            ),
+          ],
         );
       },
     );
@@ -106,10 +119,10 @@ class CreditSimulationResultsPage extends StatelessWidget {
   List<TableRow> _buildRows(Loan loan) {
     List<TableRow> rows = [];
     double installment = loan.calculateInstallment();
-    int installmentNumber = 0;
+    int loanTerm = 0;
     double balance = loan.loanAmount;
     while (balance > 0) {
-      installmentNumber++;
+      (loanTerm++);
       double initialBalance = balance;
       double interest = balance * loan.creditRate;
       double principalPayment = installment - interest;
@@ -119,31 +132,65 @@ class CreditSimulationResultsPage extends StatelessWidget {
       for (int i = 0; i < 6; i++) {
         if (i == 0) {
           cells.add(
-            TableCell(child: Text(initialBalance.toString())),
+            TableCell(
+                child: TextView(
+              text: initialBalance.toStringAsFixed(0),
+              fontSize: 12,
+              textAlign: TextAlign.center,
+            )),
           );
         } else if (i == 1) {
           cells.add(
-            TableCell(child: Text(installmentNumber.toString())),
+            TableCell(
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextView(
+                text: loanTerm.toString(),
+                fontSize: 12,
+                textAlign: TextAlign.center,
+              ),
+            )),
           );
         } else if (i == 2) {
           cells.add(
-            TableCell(child: Text(installment.toString())),
+            TableCell(
+                child: TextView(
+                    text: installment.toStringAsFixed(0),
+                    fontSize: 12,
+                    color: Color.fromARGB(255, 171, 174, 176),
+                    fontWeight: FontWeight.w300,
+                    textAlign: TextAlign.center)),
           );
         } else if (i == 3) {
           cells.add(
-            TableCell(child: Text(interest.toString())),
+            TableCell(
+                child: TextView(
+                    text: interest.toStringAsFixed(0),
+                    fontSize: 12,
+                    textAlign: TextAlign.center)),
           );
         } else if (i == 4) {
           cells.add(
-            TableCell(child: Text(principalPayment.toString())),
+            TableCell(
+                child: TextView(
+              text: principalPayment.toStringAsFixed(0),
+              fontSize: 12,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+            )),
           );
         } else if (i == 5) {
           cells.add(
-            TableCell(child: Text(balance.toString())),
+            TableCell(
+                child: TextView(
+                    text: balance.toStringAsFixed(0),
+                    fontSize: 12,
+                    textAlign: TextAlign.center)),
           );
         }
       }
-      TableRow row = TableRow(children: cells);
+      TableRow row = TableRow(children: cells, decoration: BoxDecoration());
       rows.add(row);
     }
     return rows;
