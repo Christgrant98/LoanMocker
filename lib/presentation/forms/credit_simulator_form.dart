@@ -3,14 +3,15 @@ import 'package:cw_bank_credit/presentation/widgets/utils/base_salary_form_field
 import 'package:cw_bank_credit/presentation/widgets/utils/credit_type_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/loading_modal_page.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/loan_amount_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/xmark_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/loan.dart';
+import '../../logic/states/loan_state.dart';
 import '../router/app_router.dart';
+import '../widgets/utils/loading_modal_page.dart';
 import '../widgets/utils/text_view.dart';
 import '../widgets/utils/loan_term_form_field.dart';
 
@@ -35,7 +36,6 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   int? loanTerm;
   @override
   Widget build(BuildContext context) {
-    double suggestedLoanAmount = (baseSalary ?? 0) * 7 / 0.15;
     return Form(
       key: _formKey,
       child: Column(
@@ -52,14 +52,12 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
           const SizedBox(height: 10),
           BaseSalaryFormField(
             onValueChange: (String? value, bool valid) {
-              setState(() =>
-                  baseSalary = value == null ? null : double.tryParse(value));
+              setState(
+                () =>
+                    baseSalary = value == null ? null : double.tryParse(value),
+              );
             },
           ),
-          const SizedBox(height: 10),
-          LoanTermFormField(
-              onChange: (String? value, bool valid) =>
-                  loanTerm = value == null ? null : int.tryParse(value)),
           const SizedBox(height: 10),
           LoanAmountFormField(
             onChange: (String? value, bool valid) {
@@ -67,19 +65,21 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 loanAmount = value == null ? null : double.tryParse(value);
               });
             },
-            initialValue: suggestedLoanAmount.toString(),
+          ),
+          const SizedBox(height: 10),
+          LoanTermFormField(
+            onChange: (String? value, bool valid) =>
+                loanTerm = value == null ? null : int.tryParse(value),
           ),
           const SizedBox(height: 25),
           if (_canBuildLoan())
             CustomButton(
               text: 'Simular',
               onPressed: () {
-                //_buildModalLoanPreview();
+                _buildModalLoanPreview();
                 context.read<LoanCubit>().setLoan(_buildLoan());
-                Navigator.pushReplacementNamed(
-                  context,
-                  Routes.creditSimulatorPageResult,
-                );
+                // Navigator.pushReplacementNamed(
+                //     context, Routes.creditSimulatorPageResult);
               },
             )
         ],
@@ -110,9 +110,20 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
       context: context,
       constraints: const BoxConstraints(),
       builder: (context) =>
-          CustomModalBottomSheet(content: loanPreviewContent(context)));
+          CustomModalBottomSheet(content: loanPreviewContent()));
 
-  Widget loanPreviewContent(context) {
+  void _showLoadingModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const LoadingModalPage();
+      },
+    );
+  }
+
+  Widget loanPreviewContent() {
+    final Loan? loan = context.watch<LoanCubit>().state.loan;
+
     return Stack(
       children: [
         Padding(
@@ -122,23 +133,23 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * .65,
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextView(
+                    const TextView(
                       text: 'Cuota maxima de prestamo',
                       fontWeight: FontWeight.w900,
                       fontSize: 20,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // TODO: ALLOCATE TRUE VALUES
                     TextView(
-                      text: '\$185.798.090,00',
+                      text: '\$${loan!.loanAmount.toStringAsFixed(2)}',
                       fontWeight: FontWeight.w900,
                       fontSize: 32,
                     ),
-                    SizedBox(height: 10),
-                    TextView(
+                    const SizedBox(height: 10),
+                    const TextView(
                         text:
                             '*Este valor suele cambiar con respecto a tu salario',
                         fontWeight: FontWeight.w500,
@@ -230,11 +241,13 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
               CustomButton(
                 text: 'Continuar',
                 onPressed: () {
-                  //Navigator.of(context).pop();
-                  //Future.delayed(const Duration(seconds: 5), () {
+                  _showLoadingModal(context);
 
-                  //});
-                  //return const LoadingModalPage();
+                  Future.delayed(const Duration(seconds: 3), () {
+                    Navigator.of(context).pop(); // Cerrar el modal de carga
+                    Navigator.pushReplacementNamed(
+                        context, Routes.creditSimulatorPageResult);
+                  });
                 },
               ),
             ],

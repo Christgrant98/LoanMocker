@@ -55,9 +55,7 @@ class AppRouter {
             builder: (_) => MultiBlocProvider(
                   providers: [
                     BlocProvider.value(value: _navigationCubit),
-                    BlocProvider.value(
-                      value: _loanCubit,
-                    ),
+                    BlocProvider.value(value: _loanCubit),
                   ],
                   child: const CreditSimulatorPage(),
                 ));

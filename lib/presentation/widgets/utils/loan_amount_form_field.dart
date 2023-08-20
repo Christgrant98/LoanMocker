@@ -33,10 +33,11 @@ class _LoanAmountFormFieldState extends State<LoanAmountFormField> {
             floatingLabelBehavior: FloatingLabelBehavior.never,
             filled: true,
             fillColor: Color.fromARGB(255, 212, 212, 212),
+            hintText: '\$ 1\'000.000,00',
             hintStyle: TextStyle(
                 fontFamily: 'ProductSans',
-                color: Color.fromARGB(255, 0, 0, 0),
-                fontSize: 14),
+                color: Color.fromARGB(255, 71, 71, 71),
+                fontSize: 12),
           ),
           onChanged: widget.onChange,
           onFieldSubmitted: widget.onFieldSubmitted,
