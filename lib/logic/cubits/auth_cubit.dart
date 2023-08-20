@@ -9,7 +9,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      if (state.user?.password == password) {
+      if (state.user?.password == password && state.user?.email == email) {
         emit(state.copyWith(
           authStatus: AuthStatus.successLogin,
           user: state.user,

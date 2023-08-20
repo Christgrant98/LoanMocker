@@ -38,8 +38,8 @@ class SuccessRegistrationModalPage extends StatelessWidget {
               const SizedBox(height: 25),
               CustomButton(
                   text: 'Continuar',
-                  onPressed: () =>
-                      Navigator.pushNamed(context, Routes.creditSimulatorPage))
+                  onPressed: () => Navigator.pushReplacementNamed(
+                      context, Routes.creditSimulatorPage))
             ],
           ),
         ),

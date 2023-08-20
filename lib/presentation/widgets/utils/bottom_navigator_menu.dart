@@ -53,11 +53,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               context.read<NavigationCubit>().setSelectedIndex(index);
               switch (index) {
                 case 0:
-                  Navigator.pushNamed(context, Routes.creditSimulatorPage);
+                  Navigator.pushReplacementNamed(
+                      context, Routes.creditSimulatorPage);
                   break;
 
                 case 1:
-                  Navigator.pushNamed(context, Routes.testPage);
+                  Navigator.pushReplacementNamed(context, Routes.testPage);
                   break;
               }
             },

@@ -32,8 +32,8 @@ class RegistrationPage extends StatelessWidget {
                     AuthTextRich(
                       questionText: 'Ya tienes una cuenta? ',
                       actionLinkText: 'Inicia sesion',
-                      onTap: () =>
-                          Navigator.pushNamed(context, Routes.loginPage),
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, Routes.loginPage),
                     )
                   ],
                 ),

@@ -42,8 +42,8 @@ class LoginPage extends StatelessWidget {
                   AuthTextRich(
                     questionText: 'No tienes una cuenta? ',
                     actionLinkText: 'Registrate',
-                    onTap: () =>
-                        Navigator.pushNamed(context, Routes.registrationPage),
+                    onTap: () => Navigator.pushReplacementNamed(
+                        context, Routes.registrationPage),
                   )
                 ],
               ),

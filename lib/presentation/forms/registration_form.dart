@@ -144,11 +144,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),
                 );
               } else if (_canSubmitForm()) {
-                _submitForm();
                 showDialog(
                   context: context,
                   builder: (context) => const SuccessRegistrationModalPage(),
                 );
+                _submitForm();
               }
             },
           );

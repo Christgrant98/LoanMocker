@@ -191,9 +191,8 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     context: context,
                     builder: (context) {
                       Future.delayed(const Duration(seconds: 5), () {
-                        Navigator.of(context)
-                            .pop(); // Cerrar el modal después de 5 segundos
-                        Navigator.pushNamed(
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacementNamed(
                             context, Routes.creditSimulatorPageResult);
                       });
 

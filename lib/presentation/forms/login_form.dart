@@ -1,10 +1,12 @@
 import 'package:cw_bank_credit/presentation/router/app_router.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_indicator_progress.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/cubits/auth_cubit.dart';
 import '../../logic/states/auth_states.dart';
+import '../widgets/utils/custom_alert_dialog.dart';
 import '../widgets/utils/text_view.dart';
 import '../widgets/utils/custom_button.dart';
 import '../widgets/utils/email_form_field.dart';
@@ -28,10 +30,27 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (BuildContext context, AuthState state) {
         if (state.authStatus == AuthStatus.successLogin) {
-          Navigator.pushNamed(context, Routes.creditSimulatorPage);
+          Navigator.pushReplacementNamed(context, Routes.creditSimulatorPage);
         } else if (state.authStatus == AuthStatus.failureLogin) {
           String errorMessage =
               state.error ?? 'Ocurrió un error. Por favor inténtalo de nuevo.';
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomAlertDialog(
+              header: TextView(
+                textAlign: TextAlign.center,
+                fontWeight: FontWeight.w900,
+                text: errorMessage,
+                color: Colors.black,
+              ),
+              displayDuration: 3,
+              content: const Icon(
+                CupertinoIcons.exclamationmark_octagon,
+                size: 60,
+                color: Colors.red,
+              ),
+            ),
+          );
 
           Center(
             child: TextView(
@@ -105,6 +124,10 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
+  bool _canSubmitForm() {
+    return email != null && password != null;
+  }
+
   Widget _buildSubmitButton() {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (BuildContext context, AuthState state) {
@@ -114,8 +137,7 @@ class _LoginFormState extends State<LoginForm> {
           return CustomButton(
             text: 'Iniciar sesion',
             onPressed: () {
-              _submitForm();
-              Navigator.pushNamed(context, Routes.creditSimulatorPage);
+              if (_canSubmitForm()) _submitForm();
             },
           );
         }
