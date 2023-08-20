@@ -2,9 +2,11 @@ import 'package:cw_bank_credit/presentation/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/loan.dart';
 import '../../logic/cubits/loan_cubit.dart';
 import '../../logic/states/loan_state.dart';
 import '../widgets/utils/bottom_navigator_menu.dart';
+import '../widgets/utils/text_view.dart';
 
 class CreditHistoryPage extends StatelessWidget {
   const CreditHistoryPage({Key? key}) : super(key: key);
@@ -25,26 +27,52 @@ class CreditHistoryPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Historial de Créditos',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(height: 100),
+                    const TextView(
+                      fontWeight: FontWeight.bold,
+                      text: 'Historial de Créditos',
+                      fontSize: 25,
                     ),
                     SizedBox(height: 20),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: savedLoans.length,
-                      itemBuilder: (context, index) {
-                        final loan = savedLoans[index];
-                        return ListTile(
-                          title: Text(
-                              'Monto del préstamo: ${loan.loanAmount.toStringAsFixed(2)}'),
-                          subtitle: Text('Cuotas: ${loan.loanTerm.toString()}'),
-                          // Agrega más detalles de la tabla aquí si es necesario
-                        );
-                      },
+                    const TextView(
+                      fontWeight: FontWeight.w300,
+                      text:
+                          'Aqui encontraras tu historial de creditos y el registro de todas tus simulaiones',
+                      fontSize: 18,
+                    ),
+                    const Divider(
+                      color: Color.fromARGB(255, 223, 223, 223),
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 20),
+                    Table(
+                      border: const TableBorder(
+                          bottom: BorderSide(
+                              width: 1,
+                              color: Color.fromARGB(255, 220, 224, 227)),
+                          horizontalInside: BorderSide(
+                              width: 1,
+                              color: Color.fromARGB(255, 220, 224, 227)),
+                          verticalInside: BorderSide(
+                              width: 1,
+                              color: Color.fromARGB(255, 220, 224, 227))),
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                      children: _buildRows(savedLoans),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Center(
+                      child: RichText(
+                          text: const TextSpan(
+                              text: 'No hay mas datos por mostrar ',
+                              style: TextStyle(
+                                  fontFamily: 'ProductSans',
+                                  color: Color.fromARGB(255, 177, 177, 177),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16),
+                              children: [TextSpan(text: 'ⓘ')])),
                     ),
                   ],
                 ),
@@ -55,5 +83,99 @@ class CreditHistoryPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<TableRow> _buildRows(List<Loan> loans) {
+    final rows = <TableRow>[
+      const TableRow(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TableCell(
+              child: Center(
+                child: TextView(
+                  fontWeight: FontWeight.bold,
+                  text: 'Monto de Crédito',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          TableCell(
+            child: Center(
+              child: TextView(
+                fontWeight: FontWeight.bold,
+                text: 'No. de Cuotas',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          TableCell(
+            child: Center(
+              child: TextView(
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                text: 'Interés',
+              ),
+            ),
+          ),
+          TableCell(
+            child: Center(
+              child: TextView(
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                text: 'Acciones',
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+
+    final defaultIcon = InkWell(
+      child: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Icon(
+          Icons.info_outline_rounded,
+          size: 18,
+          color: Color.fromARGB(255, 84, 40, 241),
+        ),
+      ),
+      onTap: () {},
+    ); // Icono predeterminado
+
+    for (final loan in loans) {
+      rows.add(
+        TableRow(
+          children: [
+            TableCell(
+              child: Center(
+                  child: TextView(
+                text: (loan.loanAmount.toStringAsFixed(0)),
+              )),
+            ),
+            TableCell(
+              child: Center(
+                  child: TextView(
+                text: (loan.loanTerm.toString()),
+              )),
+            ),
+            TableCell(
+              child: Center(
+                  child: TextView(
+                text: ('${(loan.creditRate * 100).toStringAsFixed(2)}%'),
+              )),
+            ),
+            TableCell(
+              child: Center(
+                child: defaultIcon,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return rows;
   }
 }
