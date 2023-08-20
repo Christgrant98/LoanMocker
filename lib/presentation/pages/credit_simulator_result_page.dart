@@ -1,6 +1,10 @@
+import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
+import 'package:cw_bank_credit/logic/states/loan_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../data/models/loan.dart';
 import '../layout.dart';
 import '../widgets/utils/settings_button.dart';
 import '../widgets/utils/text_view.dart';
@@ -28,7 +32,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
                   creditSimulatorResultHeader(),
                   SizedBox(
                     width: constraints.maxWidth * .85,
-                    child: Container(),
+                    child: _buildTable(),
                   ),
                 ],
               ),
@@ -84,5 +88,64 @@ class CreditSimulationResultsPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildTable() {
+    return BlocBuilder<LoanCubit, LoanState>(
+      builder: (context, state) {
+        if (state.loan == null) return Container();
+        return Table(
+          border: TableBorder.all(),
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: _buildRows(state.loan!),
+        );
+      },
+    );
+  }
+
+  List<TableRow> _buildRows(Loan loan) {
+    List<TableRow> rows = [];
+    double installment = loan.calculateInstallment();
+    int installmentNumber = 0;
+    double balance = loan.loanAmount;
+    while (balance > 0) {
+      installmentNumber++;
+      double initialBalance = balance;
+      double interest = balance * loan.creditRate;
+      double principalPayment = installment - interest;
+      balance -= principalPayment;
+
+      List<TableCell> cells = [];
+      for (int i = 0; i < 6; i++) {
+        if (i == 0) {
+          cells.add(
+            TableCell(child: Text(initialBalance.toString())),
+          );
+        } else if (i == 1) {
+          cells.add(
+            TableCell(child: Text(installmentNumber.toString())),
+          );
+        } else if (i == 2) {
+          cells.add(
+            TableCell(child: Text(installment.toString())),
+          );
+        } else if (i == 3) {
+          cells.add(
+            TableCell(child: Text(interest.toString())),
+          );
+        } else if (i == 4) {
+          cells.add(
+            TableCell(child: Text(principalPayment.toString())),
+          );
+        } else if (i == 5) {
+          cells.add(
+            TableCell(child: Text(balance.toString())),
+          );
+        }
+      }
+      TableRow row = TableRow(children: cells);
+      rows.add(row);
+    }
+    return rows;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/base_salary_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/credit_type_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
@@ -6,7 +7,9 @@ import 'package:cw_bank_credit/presentation/widgets/utils/loading_modal_page.dar
 import 'package:cw_bank_credit/presentation/widgets/utils/loan_amount_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/xmark_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/loan.dart';
 import '../router/app_router.dart';
 import '../widgets/utils/text_view.dart';
 import '../widgets/utils/loan_term_form_field.dart';
@@ -20,19 +23,19 @@ class CreditSimulatorForm extends StatefulWidget {
 
 class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   final _formKey = GlobalKey<FormState>();
-  int? loanAmount;
+  double? loanAmount;
 
   Map<String, double> creditRates = {
     'Crédito de vehiculo': 0.03,
     'Crédito de vivienda': 0.01,
     'Crédito de libre inversión': 0.035,
   };
-  String? selectedCreditType;
-  int? baseSalary;
+  double? creditRate;
+  double? baseSalary;
   int? loanTerm;
-
   @override
   Widget build(BuildContext context) {
+    double suggestedLoanAmount = (baseSalary ?? 0) * 7 / 0.15;
     return Form(
       key: _formKey,
       child: Column(
@@ -42,31 +45,61 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
             creditRates: creditRates,
             onChange: (String? value, double? rate) {
               setState(() {
-                selectedCreditType = value;
+                creditRate = rate;
               });
             },
           ),
           const SizedBox(height: 10),
           BaseSalaryFormField(
-            onValueChange: (int? value, bool valid) {
-              setState(() => baseSalary = valid ? value : null);
+            onValueChange: (String? value, bool valid) {
+              setState(() =>
+                  baseSalary = value == null ? null : double.tryParse(value));
             },
           ),
           const SizedBox(height: 10),
-          LoanAmountFormField(
-              onChange: (int? value, bool valid) =>
-                  loanAmount = valid ? value : null),
-          const SizedBox(height: 10),
           LoanTermFormField(
-              onChange: (int? value, bool valid) =>
-                  loanTerm = valid ? value : null),
+              onChange: (String? value, bool valid) =>
+                  loanTerm = value == null ? null : int.tryParse(value)),
+          const SizedBox(height: 10),
+          LoanAmountFormField(
+            onChange: (String? value, bool valid) {
+              setState(() {
+                loanAmount = value == null ? null : double.tryParse(value);
+              });
+            },
+            initialValue: suggestedLoanAmount.toString(),
+          ),
           const SizedBox(height: 25),
-          CustomButton(
-            text: 'Simular',
-            onPressed: () => _buildModalLoanPreview(),
-          )
+          if (_canBuildLoan())
+            CustomButton(
+              text: 'Simular',
+              onPressed: () {
+                //_buildModalLoanPreview();
+                context.read<LoanCubit>().setLoan(_buildLoan());
+                Navigator.pushReplacementNamed(
+                  context,
+                  Routes.creditSimulatorPageResult,
+                );
+              },
+            )
         ],
       ),
+    );
+  }
+
+  bool _canBuildLoan() {
+    return loanAmount != null &&
+        baseSalary != null &&
+        loanTerm != null &&
+        creditRate != null;
+  }
+
+  _buildLoan() {
+    return Loan(
+      loanAmount: loanAmount!,
+      baseSalary: baseSalary!,
+      loanTerm: loanTerm!,
+      creditRate: creditRate!,
     );
   }
 
@@ -197,18 +230,11 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
               CustomButton(
                 text: 'Continuar',
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      Future.delayed(const Duration(seconds: 5), () {
-                        Navigator.of(context).pop();
-                        Navigator.pushReplacementNamed(
-                            context, Routes.creditSimulatorPageResult);
-                      });
+                  //Navigator.of(context).pop();
+                  //Future.delayed(const Duration(seconds: 5), () {
 
-                      return const LoadingModalPage();
-                    },
-                  );
+                  //});
+                  //return const LoadingModalPage();
                 },
               ),
             ],

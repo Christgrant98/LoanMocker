@@ -1,16 +1,18 @@
+import 'dart:math';
+
 class Loan {
-  int? loanAmount;
-  int? baseSalary;
-  int? loanTerm;
-  Map<String, double> creditRates = {
-    'Crédito de vehiculo': 0.03,
-    'Crédito de vivienda': 0.01,
-    'Crédito de libre inversión': 0.035,
-  };
+  double loanAmount;
+  double baseSalary;
+  int loanTerm;
+  double creditRate;
   Loan({
-    this.loanAmount,
-    required this.creditRates,
-    this.baseSalary,
-    this.loanTerm,
+    required this.loanAmount,
+    required this.creditRate,
+    required this.baseSalary,
+    required this.loanTerm,
   });
+
+  double calculateInstallment() {
+    return (loanAmount * creditRate) / (1 - pow(1 + creditRate, -loanTerm));
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/cubits/auth_cubit.dart';
+import '../../logic/cubits/loan_cubit.dart';
 import '../../logic/cubits/navigation_cubit.dart';
 import '../pages/credit_simulator_result_page.dart';
 import '../pages/login_page.dart';
@@ -18,6 +19,7 @@ class Routes {
 
 class AppRouter {
   final NavigationCubit _navigationCubit = NavigationCubit();
+  final LoanCubit _loanCubit = LoanCubit();
   final AuthCubit authCubit;
 
   AppRouter({required this.authCubit});
@@ -37,8 +39,13 @@ class AppRouter {
       case Routes.creditSimulatorPageResult:
         _navigationCubit.setSelectedIndex(0);
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _navigationCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _navigationCubit),
+              BlocProvider.value(
+                value: _loanCubit,
+              )
+            ],
             child: const CreditSimulationResultsPage(),
           ),
         );
@@ -48,6 +55,9 @@ class AppRouter {
             builder: (_) => MultiBlocProvider(
                   providers: [
                     BlocProvider.value(value: _navigationCubit),
+                    BlocProvider.value(
+                      value: _loanCubit,
+                    ),
                   ],
                   child: const CreditSimulatorPage(),
                 ));

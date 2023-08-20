@@ -6,7 +6,7 @@ import 'text_view.dart';
 
 // todo: check how to show money format
 class BaseSalaryFormField extends StatelessWidget {
-  final void Function(int?, bool) onValueChange;
+  final void Function(String?, bool) onValueChange;
   final String? initialValue;
   final void Function(String)? onFieldSubmitted;
   const BaseSalaryFormField({
@@ -49,7 +49,7 @@ class BaseSalaryFormField extends StatelessWidget {
                 color: Color.fromARGB(255, 190, 190, 190),
                 fontSize: 12),
           ),
-          onValueChange: onValueChange,
+          onChanged: onValueChange,
           onFieldSubmitted: onFieldSubmitted,
         ),
       ],

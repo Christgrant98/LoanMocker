@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'text_view.dart';
 
 class LoanTermFormField extends StatefulWidget {
-  final void Function(int?, bool) onChange;
+  final void Function(String?, bool) onChange;
   final String? initialValue;
   final void Function(String)? onFieldSubmitted;
   const LoanTermFormField({
@@ -60,6 +60,7 @@ class _LoanTermFormFieldState extends State<LoanTermFormField> {
               floatingLabelBehavior: FloatingLabelBehavior.never,
               filled: true,
               fillColor: Colors.white),
+          onChanged: widget.onChange,
           validator: (value) {
             final int enteredValue = int.tryParse(value!) ?? -1;
             if (enteredValue < minTerm || enteredValue > maxTerm) {
