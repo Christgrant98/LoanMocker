@@ -1,4 +1,5 @@
 import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
+import 'package:cw_bank_credit/logic/states/loan_state.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/base_salary_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/credit_type_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/loan.dart';
-import '../../logic/states/loan_state.dart';
 import '../router/app_router.dart';
 import '../widgets/utils/loading_modal_page.dart';
 import '../widgets/utils/text_view.dart';
@@ -34,8 +34,11 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   double? creditRate;
   double? baseSalary;
   int? loanTerm;
+  double? suggestedLoanAmount;
+
   @override
   Widget build(BuildContext context) {
+    final Loan? loan = context.watch<LoanCubit>().state.loan;
     return Form(
       key: _formKey,
       child: Column(
@@ -52,14 +55,19 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
           const SizedBox(height: 10),
           BaseSalaryFormField(
             onValueChange: (String? value, bool valid) {
-              setState(
-                () =>
-                    baseSalary = value == null ? null : double.tryParse(value),
-              );
+              setState(() {
+                baseSalary = value == null ? null : double.tryParse(value);
+                if (baseSalary != null) {
+                  suggestedLoanAmount = (baseSalary! * 7) / 0.15;
+                }
+              });
             },
           ),
           const SizedBox(height: 10),
           LoanAmountFormField(
+            initialValue: baseSalary != null && creditRate != null
+                ? suggestedLoanAmount?.toStringAsFixed(2)
+                : null,
             onChange: (String? value, bool valid) {
               setState(() {
                 loanAmount = value == null ? null : double.tryParse(value);
@@ -123,6 +131,11 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
 
   Widget loanPreviewContent() {
     final Loan? loan = context.watch<LoanCubit>().state.loan;
+    double installment = loan!.calculateInstallment();
+    double convertedRate = loan.calculateTEA();
+    double creditRate = loan.creditRate * 100;
+    double loanAmount = loan.loanAmount;
+    double loanTotalAmount = loan.calculateTotalLoan();
 
     return Stack(
       children: [
@@ -144,7 +157,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     const SizedBox(height: 10),
                     // TODO: ALLOCATE TRUE VALUES
                     TextView(
-                      text: '\$${loan!.loanAmount.toStringAsFixed(2)}',
+                      text: '\$ ${installment.toStringAsFixed(2)}',
                       fontWeight: FontWeight.w900,
                       fontSize: 32,
                     ),
@@ -159,51 +172,51 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 ),
               ),
               const SizedBox(height: 22),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextView(
+                  const TextView(
                     text: 'Tasa Efectiva Anual desde',
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
                   ),
                   // TODO: ALLOCATE TRUE VALUES
                   TextView(
-                    text: '43.26%',
+                    text: '${convertedRate.toStringAsFixed(2)}%',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextView(
+                  const TextView(
                     text: 'Tasa Mensual Vencida desde',
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
                   ),
                   // TODO: ALLOCATE TRUE VALUES
                   TextView(
-                    text: '3.04%',
+                    text: '$creditRate%',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextView(
+                  const TextView(
                     text: 'Valor total prestamo',
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
                   ),
                   // TODO: ALLOCATE TRUE VALUES
                   TextView(
-                    text: '\$950',
+                    text: '\$ ${loanAmount.toStringAsFixed(2)}',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
@@ -215,7 +228,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 thickness: 1,
               ),
               const SizedBox(height: 15),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextView(
@@ -225,7 +238,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   ),
                   // TODO: ALLOCATE TRUE VALUES
                   TextView(
-                    text: '\$1.112.501',
+                    text: '\$ ${loanTotalAmount.toStringAsFixed(2)}',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
@@ -244,7 +257,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   _showLoadingModal(context);
 
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context).pop(); // Cerrar el modal de carga
+                    Navigator.of(context).pop();
                     Navigator.pushReplacementNamed(
                         context, Routes.creditSimulatorPageResult);
                   });
