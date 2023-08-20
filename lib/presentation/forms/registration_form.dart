@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cw_bank_credit/logic/states/auth_states.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_alert_dialog.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_indicator_progress.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/text_view.dart';
@@ -13,8 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/user.dart';
 import '../../logic/cubits/auth_cubit.dart';
-import '../../logic/cubits/user_cubit.dart';
-import '../../logic/states/user_states.dart';
 import '../widgets/utils/email_form_field.dart';
 import '../widgets/utils/id_number_form_field.dart';
 import '../widgets/utils/password_form_field.dart';
@@ -36,11 +35,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String? password;
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, UserState>(
-      listener: (BuildContext context, UserState state) {
-        if (state.userStatus == UserStatus.createSuccess) {
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (BuildContext context, AuthState state) {
+        if (state.authStatus == AuthStatus.sucessCreate) {
           context.read<AuthCubit>().login(email!, password!);
-        } else if (state.userStatus == UserStatus.createFailure) {
+        } else if (state.authStatus == AuthStatus.failureCreate) {
           String errorMessage =
               state.error ?? 'Ocurrió un error. Por favor inténtalo de nuevo.';
 
@@ -115,9 +114,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   Widget _buildSubmitButton() {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (BuildContext context, UserState state) {
-        if (state.userStatus == UserStatus.loading) {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (BuildContext context, AuthState state) {
+        if (state.authStatus == AuthStatus.loading) {
           return const Center(
             child: CustomIndicatorProgress(),
           );
@@ -173,7 +172,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   void _submitForm() {
     User user = _buildUser();
-    context.read<UserCubit>().create(user);
+    context.read<AuthCubit>().create(user);
   }
 
   Widget termsAndConditionText() => RichText(

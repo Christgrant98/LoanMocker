@@ -1,6 +1,5 @@
 import 'package:cw_bank_credit/presentation/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../forms/login_form.dart';
 import '../router/app_router.dart';

@@ -1,6 +1,4 @@
-import 'package:cw_bank_credit/logic/cubits/user_cubit.dart';
 import 'package:cw_bank_credit/presentation/pages/credit_simulator_page.dart';
-import 'package:cw_bank_credit/presentation/pages/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +18,6 @@ class Routes {
 
 class AppRouter {
   final NavigationCubit _navigationCubit = NavigationCubit();
-  final UserCubit _userCubit = UserCubit();
   final AuthCubit authCubit;
 
   AppRouter({required this.authCubit});
@@ -33,7 +30,6 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: _navigationCubit),
-              BlocProvider.value(value: _userCubit),
             ],
             child: const RegistrationPage(),
           ),
@@ -52,7 +48,6 @@ class AppRouter {
             builder: (_) => MultiBlocProvider(
                   providers: [
                     BlocProvider.value(value: _navigationCubit),
-                    BlocProvider.value(value: _userCubit),
                   ],
                   child: const CreditSimulatorPage(),
                 ));
@@ -62,7 +57,6 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: _navigationCubit),
-              BlocProvider.value(value: _userCubit),
             ],
             child: const LoginPage(),
           ),

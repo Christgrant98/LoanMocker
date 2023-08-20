@@ -4,7 +4,9 @@ enum AuthStatus {
   initial,
   loading,
   successLogin,
+  sucessCreate,
   failureLogin,
+  failureCreate
 }
 
 class AuthState {

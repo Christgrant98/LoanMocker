@@ -1,4 +1,3 @@
-import 'package:cw_bank_credit/logic/cubits/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/user.dart';
@@ -6,17 +5,14 @@ import '../states/auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthState.initial());
-  final UserCubit _userCubit = UserCubit();
 
   Future<void> login(String email, String password) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      User? user = _userCubit.getUserByEmail(email);
-
-      if (user.password == password) {
+      if (state.user?.password == password) {
         emit(state.copyWith(
           authStatus: AuthStatus.successLogin,
-          user: user,
+          user: state.user,
         ));
       } else {
         emit(state.copyWith(
@@ -30,6 +26,20 @@ class AuthCubit extends Cubit<AuthState> {
         authStatus: AuthStatus.failureLogin,
         error: errorMessage,
       ));
+    }
+  }
+
+  Future<void> create(User user) async {
+    emit(
+      state.copyWith(authStatus: AuthStatus.loading),
+    );
+    try {
+      emit(
+        state.copyWith(authStatus: AuthStatus.sucessCreate, user: user),
+      );
+    } catch (error) {
+      emit(state.copyWith(
+          authStatus: AuthStatus.failureCreate, error: error.toString()));
     }
   }
 }
