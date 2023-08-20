@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/loan.dart';
 import '../router/app_router.dart';
+import '../widgets/utils/currency_format_text.dart';
 import '../widgets/utils/loading_modal_page.dart';
 import '../widgets/utils/text_view.dart';
 import '../widgets/utils/loan_term_form_field.dart';
@@ -156,8 +157,8 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     ),
                     const SizedBox(height: 10),
                     // TODO: ALLOCATE TRUE VALUES
-                    TextView(
-                      text: '\$ ${installment.toStringAsFixed(2)}',
+                    CurrencyFormattedText(
+                      amount: installment,
                       fontWeight: FontWeight.w900,
                       fontSize: 32,
                     ),
@@ -215,10 +216,10 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     fontWeight: FontWeight.w300,
                   ),
                   // TODO: ALLOCATE TRUE VALUES
-                  TextView(
-                    text: '\$ ${loanAmount.toStringAsFixed(2)}',
+                  CurrencyFormattedText(
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
+                    amount: loanAmount,
                   ),
                 ],
               ),
@@ -237,8 +238,8 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     fontWeight: FontWeight.w900,
                   ),
                   // TODO: ALLOCATE TRUE VALUES
-                  TextView(
-                    text: '\$ ${loanTotalAmount.toStringAsFixed(2)}',
+                  CurrencyFormattedText(
+                    amount: loanTotalAmount,
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),

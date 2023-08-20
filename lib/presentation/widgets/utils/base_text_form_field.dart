@@ -7,6 +7,7 @@ class BaseTextFormField extends StatefulWidget {
   final void Function(int?, bool)? onValueChange;
   final void Function(double?, bool)? onDoubleValueChange;
   final String? Function(String?)? validator;
+  final bool isCurrency;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final InputDecoration? decoration;
@@ -40,6 +41,7 @@ class BaseTextFormField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.widget,
     this.onDoubleValueChange,
+    this.isCurrency = false,
   }) : super(key: key);
 
   @override

@@ -6,6 +6,7 @@ import '../../data/models/loan.dart';
 import '../../logic/cubits/loan_cubit.dart';
 import '../../logic/states/loan_state.dart';
 import '../widgets/utils/bottom_navigator_menu.dart';
+import '../widgets/utils/currency_format_text.dart';
 import '../widgets/utils/text_view.dart';
 
 class CreditHistoryPage extends StatelessWidget {
@@ -40,6 +41,7 @@ class CreditHistoryPage extends StatelessWidget {
                           'Aqui encontraras tu historial de creditos y el registro de todas tus simulaiones',
                       fontSize: 18,
                     ),
+                    const SizedBox(height: 5),
                     const Divider(
                       color: Color.fromARGB(255, 223, 223, 223),
                       thickness: 1,
@@ -60,7 +62,7 @@ class CreditHistoryPage extends StatelessWidget {
                           TableCellVerticalAlignment.middle,
                       children: _buildRows(savedLoans),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Center(
@@ -150,20 +152,23 @@ class CreditHistoryPage extends StatelessWidget {
           children: [
             TableCell(
               child: Center(
-                  child: TextView(
-                text: (loan.loanAmount.toStringAsFixed(0)),
+                  child: CurrencyFormattedText(
+                amount: loan.loanAmount,
+                fontSize: 10,
               )),
             ),
             TableCell(
               child: Center(
                   child: TextView(
                 text: (loan.loanTerm.toString()),
+                fontSize: 12,
               )),
             ),
             TableCell(
               child: Center(
                   child: TextView(
-                text: ('${(loan.creditRate * 100).toStringAsFixed(2)}%'),
+                fontSize: 12,
+                text: ('${(loan.creditRate * 100).toStringAsFixed(1)}%'),
               )),
             ),
             TableCell(

@@ -1,15 +1,4 @@
-import 'package:flutter/material.dart'
-    show
-        BuildContext,
-        Color,
-        FontStyle,
-        FontWeight,
-        StatelessWidget,
-        Text,
-        TextAlign,
-        TextDecoration,
-        TextStyle,
-        Widget;
+import 'package:flutter/material.dart';
 
 class TextView extends StatelessWidget {
   final String? text;

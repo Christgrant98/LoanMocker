@@ -1,5 +1,6 @@
 import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
 import 'package:cw_bank_credit/logic/states/loan_state.dart';
+import 'package:cw_bank_credit/presentation/widgets/utils/currency_format_text.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -303,9 +304,9 @@ class CreditSimulationResultsPage extends StatelessWidget {
         if (i == 0) {
           cells.add(
             TableCell(
-                child: TextView(
-              text: initialBalance.toStringAsFixed(0),
-              fontSize: 12,
+                child: CurrencyFormattedText(
+              amount: initialBalance,
+              fontSize: 8,
               textAlign: TextAlign.center,
             )),
           );
@@ -313,10 +314,10 @@ class CreditSimulationResultsPage extends StatelessWidget {
           cells.add(
             TableCell(
                 child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12),
               child: TextView(
                 text: loanTerm.toString(),
-                fontSize: 12,
+                fontSize: 8,
                 textAlign: TextAlign.center,
               ),
             )),
@@ -324,9 +325,9 @@ class CreditSimulationResultsPage extends StatelessWidget {
         } else if (i == 2) {
           cells.add(
             TableCell(
-                child: TextView(
-                    text: installment.toStringAsFixed(0),
-                    fontSize: 12,
+                child: CurrencyFormattedText(
+                    amount: installment,
+                    fontSize: 8,
                     color: const Color.fromARGB(255, 171, 174, 176),
                     fontWeight: FontWeight.w300,
                     textAlign: TextAlign.center)),
@@ -334,17 +335,16 @@ class CreditSimulationResultsPage extends StatelessWidget {
         } else if (i == 3) {
           cells.add(
             TableCell(
-                child: TextView(
-                    text: interest.toStringAsFixed(0),
-                    fontSize: 12,
-                    textAlign: TextAlign.center)),
+              child: CurrencyFormattedText(
+                  amount: interest, fontSize: 8, textAlign: TextAlign.center),
+            ),
           );
         } else if (i == 4) {
           cells.add(
             TableCell(
-                child: TextView(
-              text: principalPayment.toStringAsFixed(0),
-              fontSize: 12,
+                child: CurrencyFormattedText(
+              amount: principalPayment,
+              fontSize: 8,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.bold,
               color: Colors.green,
@@ -353,10 +353,8 @@ class CreditSimulationResultsPage extends StatelessWidget {
         } else if (i == 5) {
           cells.add(
             TableCell(
-                child: TextView(
-                    text: balance.toStringAsFixed(0),
-                    fontSize: 12,
-                    textAlign: TextAlign.center)),
+                child: CurrencyFormattedText(
+                    amount: balance, fontSize: 8, textAlign: TextAlign.center)),
           );
         }
       }
