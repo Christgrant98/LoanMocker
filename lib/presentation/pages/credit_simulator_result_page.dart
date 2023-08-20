@@ -1,14 +1,18 @@
 import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
 import 'package:cw_bank_credit/logic/states/loan_state.dart';
+import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../data/models/loan.dart';
 import '../layout.dart';
+import '../widgets/utils/custom_modal_bottom_sheet.dart';
 import '../widgets/utils/settings_button.dart';
 import '../widgets/utils/text_view.dart';
 import '../widgets/utils/bottom_navigator_menu.dart';
+import '../widgets/utils/xmark_button.dart';
 
 class CreditSimulationResultsPage extends StatelessWidget {
   const CreditSimulationResultsPage({super.key});
@@ -34,6 +38,17 @@ class CreditSimulationResultsPage extends StatelessWidget {
                     width: constraints.maxWidth * .85,
                     child: _buildTable(),
                   ),
+                  const SizedBox(height: 20),
+                  CustomButton(onPressed: () {}, text: 'Descargar tabla'),
+                  const SizedBox(height: 8),
+                  CustomButton(
+                    onPressed: () {
+                      _buildModalLoanPreview(context);
+                    },
+                    text: 'Guardar cotizacion',
+                    isAppColor: false,
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -42,6 +57,74 @@ class CreditSimulationResultsPage extends StatelessWidget {
         bottomNavigationBar: const BottomNavigator(),
       );
     });
+  }
+
+  _buildModalLoanPreview(context) => showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black,
+      context: context,
+      constraints: const BoxConstraints(),
+      builder: (context) =>
+          CustomModalBottomSheet(content: saveConfirmationContent(context)));
+
+  Widget saveConfirmationContent(context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * .7,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20),
+                      Icon(
+                        CupertinoIcons.exclamationmark_octagon,
+                        size: 80,
+                        color: Color.fromARGB(255, 84, 40, 241),
+                      ),
+                      SizedBox(height: 20),
+                      TextView(
+                        text: 'Esta seguro que desea Guardar la cotizacion?',
+                        fontWeight: FontWeight.w900,
+                        fontSize: 25,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      TextView(
+                        text:
+                            'La cotizacion realizada la podras consultar en tu historial de creditos.',
+                        fontWeight: FontWeight.w300,
+                        textAlign: TextAlign.center,
+                        fontSize: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Spacer(),
+              CustomButton(onPressed: () {}, text: 'Guardar'),
+              const SizedBox(height: 10),
+              CustomButton(
+                text: 'Cancelar',
+                isAppColor: false,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+        const Positioned(
+          right: 10,
+          top: 10,
+          child: XmarkButton(),
+        ),
+      ],
+    );
   }
 
   Widget creditSimulatorResultHeader() {
@@ -97,10 +180,11 @@ class CreditSimulationResultsPage extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(
+              height: 15,
+            ),
             Table(
               border: const TableBorder(
-                  top: BorderSide(
-                      width: 1, color: Color.fromARGB(255, 220, 224, 227)),
                   bottom: BorderSide(
                       width: 1, color: Color.fromARGB(255, 220, 224, 227)),
                   horizontalInside: BorderSide(
@@ -118,6 +202,83 @@ class CreditSimulationResultsPage extends StatelessWidget {
 
   List<TableRow> _buildRows(Loan loan) {
     List<TableRow> rows = [];
+    List<TableCell> headerCells = [];
+    for (int i = 0; i < 6; i++) {
+      if (i == 0) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'Saldo inicial'),
+            ),
+          ),
+        );
+      } else if (i == 1) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'No. cuotas'),
+            ),
+          ),
+        );
+      } else if (i == 2) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'Cuota'),
+            ),
+          ),
+        );
+      } else if (i == 3) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'Interes'),
+            ),
+          ),
+        );
+      } else if (i == 4) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'Abono Capital'),
+            ),
+          ),
+        );
+      } else if (i == 5) {
+        headerCells.add(
+          const TableCell(
+            child: Center(
+              child: TextView(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  textAlign: TextAlign.center,
+                  text: 'Saldo del periodo'),
+            ),
+          ),
+        );
+      }
+    }
+    rows.add(TableRow(children: headerCells));
     double installment = loan.calculateInstallment();
     int loanTerm = 0;
     double balance = loan.loanAmount;
@@ -157,7 +318,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
                 child: TextView(
                     text: installment.toStringAsFixed(0),
                     fontSize: 12,
-                    color: Color.fromARGB(255, 171, 174, 176),
+                    color: const Color.fromARGB(255, 171, 174, 176),
                     fontWeight: FontWeight.w300,
                     textAlign: TextAlign.center)),
           );
@@ -190,7 +351,8 @@ class CreditSimulationResultsPage extends StatelessWidget {
           );
         }
       }
-      TableRow row = TableRow(children: cells, decoration: BoxDecoration());
+      TableRow row =
+          TableRow(children: cells, decoration: const BoxDecoration());
       rows.add(row);
     }
     return rows;

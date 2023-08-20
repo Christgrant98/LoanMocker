@@ -22,6 +22,7 @@ class CustomModalBottomSheet extends StatelessWidget {
         ),
         Container(
           height: MediaQuery.of(context).size.height * .5,
+          width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12.5),

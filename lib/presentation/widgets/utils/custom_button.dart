@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? width;
   final double? borderRadius;
+  final bool isAppColor;
 
   const CustomButton({
     Key? key,
@@ -15,16 +16,22 @@ class CustomButton extends StatelessWidget {
     this.borderRadius,
     required this.onPressed,
     required this.text,
+    this.isAppColor = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 50,
+      height: height ?? 50,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 84, 40, 241),
+        color: isAppColor
+            ? const Color.fromARGB(255, 84, 40, 241)
+            : Colors.transparent,
         borderRadius: BorderRadius.circular(borderRadius ?? 8),
+        border: isAppColor
+            ? null
+            : Border.all(color: const Color.fromARGB(255, 84, 40, 241)),
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -35,7 +42,14 @@ class CustomButton extends StatelessWidget {
           elevation: 0.0,
         ),
         onPressed: onPressed,
-        child: TextView(text: text, fontWeight: FontWeight.w900, fontSize: 15),
+        child: TextView(
+          text: text,
+          fontWeight: FontWeight.w900,
+          fontSize: 15,
+          color: isAppColor
+              ? Colors.white
+              : const Color.fromARGB(255, 84, 40, 241),
+        ),
       ),
     );
   }

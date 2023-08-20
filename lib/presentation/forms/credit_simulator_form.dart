@@ -199,7 +199,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   ),
                   // TODO: ALLOCATE TRUE VALUES
                   TextView(
-                    text: '$creditRate%',
+                    text: '${creditRate.toStringAsFixed(1)}%',
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
@@ -231,7 +231,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextView(
+                  const TextView(
                     text: 'Valor total a pagar',
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
@@ -256,7 +256,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 onPressed: () {
                   _showLoadingModal(context);
 
-                  Future.delayed(const Duration(seconds: 3), () {
+                  Future.delayed(const Duration(seconds: 1), () {
                     Navigator.of(context).pop();
                     Navigator.pushReplacementNamed(
                         context, Routes.creditSimulatorPageResult);
