@@ -21,10 +21,16 @@ class CreditSimulatorForm extends StatefulWidget {
 class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   final _formKey = GlobalKey<FormState>();
   int? loanAmount;
-  String? typecc = '';
-  List<String> valuesV = ['Pollo', 'Christian', 'Vini'];
+
+  Map<String, double> creditRates = {
+    'Crédito de vehiculo': 0.03,
+    'Crédito de vivienda': 0.01,
+    'Crédito de libre inversión': 0.035,
+  };
+  String? selectedCreditType;
   int? baseSalary;
   int? loanTerm;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -32,13 +38,17 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
       child: Column(
         children: [
           CreditTypeFormField(
-              creditTypes: valuesV,
-              onChange: (String? value) {
-                setState(() => typecc = value);
-              }),
+            creditTypes: creditRates.keys.toList(),
+            creditRates: creditRates,
+            onChange: (String? value, double? rate) {
+              setState(() {
+                selectedCreditType = value;
+              });
+            },
+          ),
           const SizedBox(height: 10),
           BaseSalaryFormField(
-            onChange: (int? value, bool valid) {
+            onValueChange: (int? value, bool valid) {
               setState(() => baseSalary = valid ? value : null);
             },
           ),

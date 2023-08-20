@@ -23,6 +23,8 @@ class LoanTermFormField extends StatefulWidget {
 class _LoanTermFormFieldState extends State<LoanTermFormField> {
   @override
   Widget build(BuildContext context) {
+    int minTerm = 12;
+    int maxTerm = 84;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +60,13 @@ class _LoanTermFormFieldState extends State<LoanTermFormField> {
               floatingLabelBehavior: FloatingLabelBehavior.never,
               filled: true,
               fillColor: Colors.white),
+          validator: (value) {
+            final int enteredValue = int.tryParse(value!) ?? -1;
+            if (enteredValue < minTerm || enteredValue > maxTerm) {
+              return 'Ingresa un número entre $minTerm y $maxTerm';
+            }
+            return null;
+          },
         ),
       ],
     );

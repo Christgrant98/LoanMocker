@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'text_view.dart';
 
 class CreditTypeFormField extends StatefulWidget {
-  final void Function(String?) onChange;
+  final void Function(String?, double?) onChange;
   final List<String> creditTypes;
+  final Map<String, double> creditRates;
 
   const CreditTypeFormField({
     super.key,
     required this.creditTypes,
     required this.onChange,
+    required this.creditRates,
   });
 
   @override
@@ -50,7 +52,9 @@ class _CreditTypeFormFieldState extends State<CreditTypeFormField> {
           onChanged: (newValue) {
             setState(() {
               selectedCreditType = newValue;
-              widget.onChange(newValue);
+              double? selectedRate = widget
+                  .creditRates[newValue]; // Buscamos la tasa correspondiente
+              widget.onChange(newValue, selectedRate); // Pasamos ambos valores
             });
           },
           items: widget.creditTypes.map((String creditType) {

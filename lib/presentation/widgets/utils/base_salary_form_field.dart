@@ -4,13 +4,14 @@ import 'package:cw_bank_credit/presentation/widgets/utils/base_text_form_field.d
 
 import 'text_view.dart';
 
+// todo: check how to show money format
 class BaseSalaryFormField extends StatelessWidget {
-  final void Function(int?, bool) onChange;
+  final void Function(int?, bool) onValueChange;
   final String? initialValue;
   final void Function(String)? onFieldSubmitted;
   const BaseSalaryFormField({
     Key? key,
-    required this.onChange,
+    required this.onValueChange,
     this.initialValue,
     this.onFieldSubmitted,
   }) : super(key: key);
@@ -31,7 +32,7 @@ class BaseSalaryFormField extends StatelessWidget {
           keyboardType: TextInputType.number,
           initialValue: initialValue,
           decoration: const InputDecoration(
-            contentPadding: const EdgeInsets.all(10),
+            contentPadding: EdgeInsets.all(10),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             filled: true,
             fillColor: Colors.white,
@@ -48,7 +49,7 @@ class BaseSalaryFormField extends StatelessWidget {
                 color: Color.fromARGB(255, 190, 190, 190),
                 fontSize: 12),
           ),
-          onValueChange: onChange,
+          onValueChange: onValueChange,
           onFieldSubmitted: onFieldSubmitted,
         ),
       ],

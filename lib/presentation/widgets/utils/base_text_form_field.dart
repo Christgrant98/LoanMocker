@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 class BaseTextFormField extends StatefulWidget {
   final void Function(String?, bool)? onChanged;
   final void Function(int?, bool)? onValueChange;
+  final void Function(double?, bool)? onDoubleValueChange;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
@@ -38,6 +39,7 @@ class BaseTextFormField extends StatefulWidget {
     this.maxLength,
     this.textAlign = TextAlign.start,
     this.widget,
+    this.onDoubleValueChange,
   }) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class _BaseTextFormField extends State<BaseTextFormField> {
   Widget build(BuildContext context) {
     InputDecoration defaultDecoration = _buildDefaultDecoration();
     return TextFormField(
-      style: TextStyle(
+      style: const TextStyle(
         fontFamily: 'ProductSans',
       ),
       textAlign: widget.textAlign,
