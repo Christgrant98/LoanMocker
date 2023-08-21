@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/loan.dart';
 import '../../logic/cubits/loan_cubit.dart';
-import '../../logic/states/loan_state.dart';
 import '../widgets/utils/bottom_navigator_menu.dart';
 import '../widgets/utils/currency_format_text.dart';
 import '../widgets/utils/text_view.dart';
@@ -26,26 +25,9 @@ class CreditHistoryPage extends StatelessWidget {
               child: SizedBox(
                 width: constraints.maxWidth * .9,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 100),
-                    const TextView(
-                      fontWeight: FontWeight.bold,
-                      text: 'Historial de Créditos',
-                      fontSize: 25,
-                    ),
-                    SizedBox(height: 20),
-                    const TextView(
-                      fontWeight: FontWeight.w300,
-                      text:
-                          'Aqui encontraras tu historial de creditos y el registro de todas tus simulaiones',
-                      fontSize: 18,
-                    ),
-                    const SizedBox(height: 5),
-                    const Divider(
-                      color: Color.fromARGB(255, 223, 223, 223),
-                      thickness: 1,
-                    ),
+                    historyPageHeader(),
                     const SizedBox(height: 20),
                     Table(
                       border: const TableBorder(
@@ -87,6 +69,31 @@ class CreditHistoryPage extends StatelessWidget {
     );
   }
 
+  Widget historyPageHeader() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextView(
+          fontWeight: FontWeight.bold,
+          text: 'Historial de Créditos',
+          fontSize: 25,
+        ),
+        SizedBox(height: 20),
+        TextView(
+          fontWeight: FontWeight.w300,
+          text:
+              'Aqui encontraras tu historial de creditos y el registro de todas tus simulaiones',
+          fontSize: 18,
+        ),
+        SizedBox(height: 5),
+        Divider(
+          color: Color.fromARGB(255, 223, 223, 223),
+          thickness: 1,
+        ),
+      ],
+    );
+  }
+
   List<TableRow> _buildRows(List<Loan> loans) {
     final rows = <TableRow>[
       const TableRow(
@@ -99,6 +106,7 @@ class CreditHistoryPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   text: 'Monto de Crédito',
                   textAlign: TextAlign.center,
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -109,6 +117,7 @@ class CreditHistoryPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 text: 'No. de Cuotas',
                 textAlign: TextAlign.center,
+                fontSize: 12,
               ),
             ),
           ),
@@ -118,6 +127,7 @@ class CreditHistoryPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 textAlign: TextAlign.center,
                 text: 'Interés',
+                fontSize: 12,
               ),
             ),
           ),
@@ -127,6 +137,7 @@ class CreditHistoryPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 textAlign: TextAlign.center,
                 text: 'Acciones',
+                fontSize: 12,
               ),
             ),
           ),
@@ -144,7 +155,7 @@ class CreditHistoryPage extends StatelessWidget {
         ),
       ),
       onTap: () {},
-    ); // Icono predeterminado
+    );
 
     for (final loan in loans) {
       rows.add(

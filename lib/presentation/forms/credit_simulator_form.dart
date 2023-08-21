@@ -1,5 +1,4 @@
 import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
-import 'package:cw_bank_credit/logic/states/loan_state.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/base_salary_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/credit_type_form_field.dart';
 import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
@@ -39,7 +38,6 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
 
   @override
   Widget build(BuildContext context) {
-    final Loan? loan = context.watch<LoanCubit>().state.loan;
     return Form(
       key: _formKey,
       child: Column(
@@ -58,17 +56,11 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
             onValueChange: (String? value, bool valid) {
               setState(() {
                 baseSalary = value == null ? null : double.tryParse(value);
-                if (baseSalary != null) {
-                  suggestedLoanAmount = (baseSalary! * 7) / 0.15;
-                }
               });
             },
           ),
           const SizedBox(height: 10),
           LoanAmountFormField(
-            initialValue: baseSalary != null && creditRate != null
-                ? suggestedLoanAmount?.toStringAsFixed(2)
-                : null,
             onChange: (String? value, bool valid) {
               setState(() {
                 loanAmount = value == null ? null : double.tryParse(value);
@@ -81,26 +73,18 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 loanTerm = value == null ? null : int.tryParse(value),
           ),
           const SizedBox(height: 25),
-          if (_canBuildLoan())
-            CustomButton(
-              text: 'Simular',
-              onPressed: () {
-                _buildModalLoanPreview();
-                context.read<LoanCubit>().setLoan(_buildLoan());
-                // Navigator.pushReplacementNamed(
-                //     context, Routes.creditSimulatorPageResult);
-              },
-            )
+          CustomButton(
+            text: 'Simular',
+            onPressed: () {
+              _buildModalLoanPreview();
+              context.read<LoanCubit>().setLoan(_buildLoan());
+              // Navigator.pushReplacementNamed(
+              //     context, Routes.creditSimulatorPageResult);
+            },
+          )
         ],
       ),
     );
-  }
-
-  bool _canBuildLoan() {
-    return loanAmount != null &&
-        baseSalary != null &&
-        loanTerm != null &&
-        creditRate != null;
   }
 
   _buildLoan() {
@@ -138,141 +122,138 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
     double loanAmount = loan.loanAmount;
     double loanTotalAmount = loan.calculateTotalLoan();
 
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * .65,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .65,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TextView(
+                        text: 'Cuota maxima de prestamo',
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                      ),
+                      const SizedBox(height: 10),
+                      CurrencyFormattedText(
+                        amount: installment,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 32,
+                      ),
+                      const SizedBox(height: 10),
+                      const TextView(
+                          text:
+                              '*Este valor suele cambiar con respecto a tu salario',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 84, 40, 241)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TextView(
-                      text: 'Cuota maxima de prestamo',
-                      fontWeight: FontWeight.w900,
-                      fontSize: 20,
+                      text: 'Tasa Efectiva Anual desde',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w300,
                     ),
-                    const SizedBox(height: 10),
-                    // TODO: ALLOCATE TRUE VALUES
-                    CurrencyFormattedText(
-                      amount: installment,
+                    TextView(
+                      text: '${convertedRate.toStringAsFixed(2)}%',
+                      fontSize: 17,
                       fontWeight: FontWeight.w900,
-                      fontSize: 32,
                     ),
-                    const SizedBox(height: 10),
-                    const TextView(
-                        text:
-                            '*Este valor suele cambiar con respecto a tu salario',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 84, 40, 241)),
                   ],
                 ),
-              ),
-              const SizedBox(height: 22),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const TextView(
-                    text: 'Tasa Efectiva Anual desde',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  // TODO: ALLOCATE TRUE VALUES
-                  TextView(
-                    text: '${convertedRate.toStringAsFixed(2)}%',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const TextView(
-                    text: 'Tasa Mensual Vencida desde',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  // TODO: ALLOCATE TRUE VALUES
-                  TextView(
-                    text: '${creditRate.toStringAsFixed(1)}%',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const TextView(
-                    text: 'Valor total prestamo',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  // TODO: ALLOCATE TRUE VALUES
-                  CurrencyFormattedText(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                    amount: loanAmount,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Color.fromARGB(255, 223, 223, 223),
-                thickness: 1,
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const TextView(
-                    text: 'Valor total a pagar',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  // TODO: ALLOCATE TRUE VALUES
-                  CurrencyFormattedText(
-                    amount: loanTotalAmount,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 7.5),
-              const TextView(
-                text: '(capital = intereses = seguro)',
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-              ),
-              const SizedBox(height: 12),
-              CustomButton(
-                text: 'Continuar',
-                onPressed: () {
-                  _showLoadingModal(context);
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TextView(
+                      text: 'Tasa Mensual Vencida desde',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    TextView(
+                      text: '${creditRate.toStringAsFixed(1)}%',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TextView(
+                      text: 'Valor total prestamo',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    CurrencyFormattedText(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                      amount: loanAmount,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const Divider(
+                  color: Color.fromARGB(255, 223, 223, 223),
+                  thickness: 1,
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TextView(
+                      text: 'Valor total a pagar',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    CurrencyFormattedText(
+                      amount: loanTotalAmount,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 7.5),
+                const TextView(
+                  text: '(capital = intereses = seguro)',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                ),
+                const SizedBox(height: 12),
+                CustomButton(
+                  text: 'Continuar',
+                  onPressed: () {
+                    _showLoadingModal(context);
 
-                  Future.delayed(const Duration(seconds: 1), () {
-                    Navigator.of(context).pop();
-                    Navigator.pushReplacementNamed(
-                        context, Routes.creditSimulatorPageResult);
-                  });
-                },
-              ),
-            ],
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacementNamed(
+                          context, Routes.creditSimulatorPageResult);
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-        const Positioned(
-          right: 10,
-          top: 10,
-          child: XmarkButton(),
-        ),
-      ],
+          const Positioned(
+            right: 10,
+            top: 10,
+            child: XmarkButton(),
+          ),
+        ],
+      ),
     );
   }
 }

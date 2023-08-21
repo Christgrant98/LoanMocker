@@ -46,10 +46,88 @@ class CreditSimulationResultsPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   CustomButton(
                     onPressed: () {
-                      context.read<LoanCubit>().saveLoanData(loan!);
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          barrierColor: Colors.black,
+                          context: context,
+                          constraints: const BoxConstraints(),
+                          builder: (_) => CustomModalBottomSheet(
+                                  content: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      children: [
+                                        Center(
+                                          child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .7,
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(height: 20),
+                                                Icon(
+                                                  CupertinoIcons
+                                                      .exclamationmark_octagon,
+                                                  size: 80,
+                                                  color: Color.fromARGB(
+                                                      255, 84, 40, 241),
+                                                ),
+                                                SizedBox(height: 20),
+                                                TextView(
+                                                  text:
+                                                      'Esta seguro que desea Guardar la cotizacion?',
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 25,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 20),
+                                                TextView(
+                                                  text:
+                                                      'La cotizacion realizada la podras consultar en tu historial de creditos.',
+                                                  fontWeight: FontWeight.w300,
+                                                  textAlign: TextAlign.center,
+                                                  fontSize: 18,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        CustomButton(
+                                          text: 'Guardar',
+                                          onPressed: () {
+                                            context
+                                                .read<LoanCubit>()
+                                                .saveLoanData(loan!);
+                                            Navigator.pushReplacementNamed(
+                                                context,
+                                                Routes.creditHistoryPage);
+                                          },
+                                        ),
+                                        const SizedBox(height: 10),
+                                        CustomButton(
+                                          text: 'Cancelar',
+                                          isAppColor: false,
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                                  const Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: XmarkButton(),
+                                  ),
+                                ],
+                              )));
 
-                      Navigator.pushReplacementNamed(
-                          context, Routes.creditHistoryPage);
                       // _buildModalLoanPreview(context);
                     },
                     text: 'Guardar cotizacion',
@@ -64,77 +142,6 @@ class CreditSimulationResultsPage extends StatelessWidget {
         bottomNavigationBar: const BottomNavigator(),
       );
     });
-  }
-
-  _buildModalLoanPreview(context) => showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black,
-      context: context,
-      constraints: const BoxConstraints(),
-      builder: (context) =>
-          CustomModalBottomSheet(content: saveConfirmationContent(context)));
-
-  Widget saveConfirmationContent(context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * .7,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 20),
-                      Icon(
-                        CupertinoIcons.exclamationmark_octagon,
-                        size: 80,
-                        color: Color.fromARGB(255, 84, 40, 241),
-                      ),
-                      SizedBox(height: 20),
-                      TextView(
-                        text: 'Esta seguro que desea Guardar la cotizacion?',
-                        fontWeight: FontWeight.w900,
-                        fontSize: 25,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      TextView(
-                        text:
-                            'La cotizacion realizada la podras consultar en tu historial de creditos.',
-                        fontWeight: FontWeight.w300,
-                        textAlign: TextAlign.center,
-                        fontSize: 18,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Spacer(),
-              CustomButton(
-                text: 'Guardar',
-                onPressed: () {},
-              ),
-              const SizedBox(height: 10),
-              CustomButton(
-                text: 'Cancelar',
-                isAppColor: false,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
-        const Positioned(
-          right: 10,
-          top: 10,
-          child: XmarkButton(),
-        ),
-      ],
-    );
   }
 
   Widget creditSimulatorResultHeader() {
@@ -217,12 +224,15 @@ class CreditSimulationResultsPage extends StatelessWidget {
       if (i == 0) {
         headerCells.add(
           const TableCell(
-            child: Center(
-              child: TextView(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  textAlign: TextAlign.center,
-                  text: 'Saldo inicial'),
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: TextView(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    textAlign: TextAlign.center,
+                    text: 'Saldo inicial'),
+              ),
             ),
           ),
         );
@@ -293,7 +303,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
     int loanTerm = 0;
     double balance = loan.loanAmount;
     while (balance > 0) {
-      (loanTerm++);
+      loanTerm++;
       double initialBalance = balance;
       double interest = balance * loan.creditRate;
       double principalPayment = installment - interest;
