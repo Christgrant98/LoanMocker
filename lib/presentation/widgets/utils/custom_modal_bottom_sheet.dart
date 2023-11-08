@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomModalBottomSheet extends StatelessWidget {
+  final double? height;
   final Widget content;
-  const CustomModalBottomSheet({super.key, required this.content});
+  const CustomModalBottomSheet({
+    super.key,
+    required this.content,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class CustomModalBottomSheet extends StatelessWidget {
           height: 10,
         ),
         Container(
-          height: MediaQuery.of(context).size.height * .5,
+          height: height ?? MediaQuery.of(context).size.height * .5,
           width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(

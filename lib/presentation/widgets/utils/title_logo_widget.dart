@@ -19,8 +19,8 @@ class TitleLogoWidget extends StatelessWidget {
         const TextView(
           text: 'Loan Mocker',
           color: Colors.black,
-          fontSize: 23.5,
-          fontWeight: FontWeight.bold,
+          fontSize: 30,
+          fontWeight: FontWeight.w900,
         ),
       ],
     );

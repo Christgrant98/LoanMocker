@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loanMocker/data/models/loan.dart';
 import 'package:loanMocker/logic/cubits/loan_cubit.dart';
 import 'package:loanMocker/presentation/widgets/utils/currency_format_text.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
 import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
 
 class CreditHistoryContent extends StatelessWidget {
@@ -36,7 +39,7 @@ class CreditHistoryContent extends StatelessWidget {
             ),
           ),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: _buildRows(savedLoans),
+          children: _buildRows(savedLoans, context),
         ),
         const SizedBox(height: 25),
         Center(
@@ -49,7 +52,9 @@ class CreditHistoryContent extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                   fontSize: 16),
               children: [
-                TextSpan(text: 'ⓘ'),
+                TextSpan(
+                  text: 'ⓘ',
+                ),
               ],
             ),
           ),
@@ -58,14 +63,11 @@ class CreditHistoryContent extends StatelessWidget {
     );
   }
 
-  List<TableRow> _buildRows(List<Loan> loans) {
+  List<TableRow> _buildRows(List<Loan> loans, BuildContext context) {
     final rows = <TableRow>[
       TableRow(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildTableCell(text: 'Monto de Crédito'),
-          ),
+          _buildTableCell(text: 'Monto de Crédito'),
           _buildTableCell(text: 'No. de Cuotas'),
           _buildTableCell(text: 'Interés'),
           _buildTableCell(text: 'Acciones'),
@@ -89,11 +91,10 @@ class CreditHistoryContent extends StatelessWidget {
             ),
             _buildTableCell(
                 text: '${(loan.creditRate * 100).toStringAsFixed(1)}%'),
-            _buildTableCell(
-              text: loan.loanTerm.toString(),
-            ),
             TableCell(
-              child: Center(child: _buildActionBttn()),
+              child: Center(
+                child: _buildActionBttn(context),
+              ),
             ),
           ],
         ),
@@ -118,7 +119,7 @@ class CreditHistoryContent extends StatelessWidget {
     );
   }
 
-  InkWell _buildActionBttn() {
+  Widget _buildActionBttn(BuildContext context) {
     return InkWell(
       child: const Padding(
         padding: EdgeInsets.all(8.0),
@@ -128,9 +129,69 @@ class CreditHistoryContent extends StatelessWidget {
           color: Color.fromARGB(255, 0, 90, 126),
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.black54,
+          constraints: const BoxConstraints(),
+          context: context,
+          builder: (ctx) {
+            return CustomModalBottomSheet(
+              height: 250,
+              content: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const TextView(
+                      text: 'Acciones de la Tabla',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(height: 25),
+                    CustomButton(
+                      isAppColor: false,
+                      text: 'Ver Contenido',
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    CustomButton(
+                      text: 'Descargar Tabla',
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
+
+  // Widget _buildMenuOption({
+  //   required String title,
+  //   required void Function() onTap,
+  //   IconData? icon,
+  // }) {
+  //   return Card(
+  //     elevation: 1.2,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(8),
+  //     ),
+  //     color: const Color.fromARGB(255, 230, 230, 230),
+  //     child: ListTile(
+  //       leading: icon == null ? Icon(icon, color: Colors.black) : null,
+  //       title: TextView(
+  //         text: title,
+  //         fontWeight: FontWeight.bold,
+  //         color: Colors.black,
+  //       ),
+  //       onTap: onTap,
+  //     ),
+  //   );
+  // }
 
   Widget historyPageHeader() {
     return const Column(

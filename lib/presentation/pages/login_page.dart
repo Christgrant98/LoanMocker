@@ -23,7 +23,9 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 100),
-                  const Center(child: TitleLogoWidget()),
+                  const Center(
+                    child: TitleLogoWidget(),
+                  ),
                   const SizedBox(height: 25),
                   const SizedBox(height: 2.5),
                   SizedBox(
