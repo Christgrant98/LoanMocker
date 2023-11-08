@@ -44,19 +44,21 @@ class CreditHistoryPage extends StatelessWidget {
                           TableCellVerticalAlignment.middle,
                       children: _buildRows(savedLoans),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
+                    const SizedBox(height: 25),
                     Center(
                       child: RichText(
-                          text: const TextSpan(
-                              text: 'No hay mas datos por mostrar ',
-                              style: TextStyle(
-                                  fontFamily: 'ProductSans',
-                                  color: Color.fromARGB(255, 177, 177, 177),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 16),
-                              children: [TextSpan(text: 'ⓘ')])),
+                        text: const TextSpan(
+                          text: 'No hay mas datos por mostrar ',
+                          style: TextStyle(
+                              fontFamily: 'ProductSans',
+                              color: Color.fromARGB(255, 177, 177, 177),
+                              fontWeight: FontWeight.w300,
+                              fontSize: 16),
+                          children: [
+                            TextSpan(text: 'ⓘ'),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -96,66 +98,18 @@ class CreditHistoryPage extends StatelessWidget {
 
   List<TableRow> _buildRows(List<Loan> loans) {
     final rows = <TableRow>[
-      const TableRow(
+      TableRow(
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TableCell(
-              child: Center(
-                child: TextView(
-                  fontWeight: FontWeight.bold,
-                  text: 'Monto de Crédito',
-                  textAlign: TextAlign.center,
-                  fontSize: 12,
-                ),
-              ),
-            ),
+            padding: const EdgeInsets.all(8.0),
+            child: _buildTableCell(text: 'Monto de Crédito'),
           ),
-          TableCell(
-            child: Center(
-              child: TextView(
-                fontWeight: FontWeight.bold,
-                text: 'No. de Cuotas',
-                textAlign: TextAlign.center,
-                fontSize: 12,
-              ),
-            ),
-          ),
-          TableCell(
-            child: Center(
-              child: TextView(
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-                text: 'Interés',
-                fontSize: 12,
-              ),
-            ),
-          ),
-          TableCell(
-            child: Center(
-              child: TextView(
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-                text: 'Acciones',
-                fontSize: 12,
-              ),
-            ),
-          ),
+          _buildTableCell(text: 'No. de Cuotas'),
+          _buildTableCell(text: 'Interés'),
+          _buildTableCell(text: 'Acciones'),
         ],
       ),
     ];
-
-    final defaultIcon = InkWell(
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.info_outline_rounded,
-          size: 18,
-          color: Color.fromARGB(255, 0, 90, 126),
-        ),
-      ),
-      onTap: () {},
-    );
 
     for (final loan in loans) {
       rows.add(
@@ -184,7 +138,7 @@ class CreditHistoryPage extends StatelessWidget {
             ),
             TableCell(
               child: Center(
-                child: defaultIcon,
+                child: _buildActionBttn(),
               ),
             ),
           ],
@@ -193,5 +147,34 @@ class CreditHistoryPage extends StatelessWidget {
     }
 
     return rows;
+  }
+
+  InkWell _buildActionBttn() {
+    return InkWell(
+      child: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Icon(
+          Icons.info_outline_rounded,
+          size: 18,
+          color: Color.fromARGB(255, 0, 90, 126),
+        ),
+      ),
+      onTap: () {},
+    );
+  }
+
+  Widget _buildTableCell({
+    required String text,
+  }) {
+    return TableCell(
+      child: Center(
+        child: TextView(
+          fontWeight: FontWeight.bold,
+          text: text,
+          textAlign: TextAlign.center,
+          fontSize: 12,
+        ),
+      ),
+    );
   }
 }
