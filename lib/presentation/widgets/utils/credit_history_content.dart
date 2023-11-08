@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loanMocker/data/models/loan.dart';
 import 'package:loanMocker/logic/cubits/loan_cubit.dart';
+import 'package:loanMocker/logic/states/loan_state.dart';
 import 'package:loanMocker/presentation/widgets/utils/currency_format_text.dart';
 import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
 import 'package:loanMocker/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
+import 'package:loanMocker/presentation/widgets/utils/modal_view.dart';
 import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
 
 class CreditHistoryContent extends StatelessWidget {
@@ -22,24 +24,7 @@ class CreditHistoryContent extends StatelessWidget {
         const SizedBox(height: 100),
         historyPageHeader(),
         const SizedBox(height: 20),
-        Table(
-          border: const TableBorder(
-            bottom: BorderSide(
-              width: 1,
-              color: Color.fromARGB(255, 220, 224, 227),
-            ),
-            horizontalInside: BorderSide(
-              width: 1,
-              color: Color.fromARGB(255, 220, 224, 227),
-            ),
-            verticalInside: BorderSide(
-              width: 1,
-              color: Color.fromARGB(255, 220, 224, 227),
-            ),
-          ),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: _buildRows(savedLoans, context),
-        ),
+        _buildTable(savedLoans, context),
         const SizedBox(height: 25),
         Center(
           child: RichText(
@@ -62,7 +47,31 @@ class CreditHistoryContent extends StatelessWidget {
     );
   }
 
-  List<TableRow> _buildRows(List<Loan> loans, BuildContext context) {
+  Table _buildTable(List<Loan> savedLoans, BuildContext context) {
+    return Table(
+      border: const TableBorder(
+        bottom: BorderSide(
+          width: 1,
+          color: Color.fromARGB(255, 220, 224, 227),
+        ),
+        horizontalInside: BorderSide(
+          width: 1,
+          color: Color.fromARGB(255, 220, 224, 227),
+        ),
+        verticalInside: BorderSide(
+          width: 1,
+          color: Color.fromARGB(255, 220, 224, 227),
+        ),
+      ),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: _buildRows(savedLoans, context),
+    );
+  }
+
+  List<TableRow> _buildRows(
+    List<Loan> loans,
+    BuildContext context,
+  ) {
     final rows = <TableRow>[
       TableRow(
         children: [
@@ -118,7 +127,9 @@ class CreditHistoryContent extends StatelessWidget {
     );
   }
 
-  Widget _buildActionBttn(BuildContext context) {
+  Widget _buildActionBttn(
+    BuildContext context,
+  ) {
     return InkWell(
       child: const Padding(
         padding: EdgeInsets.all(8.0),
@@ -135,69 +146,67 @@ class CreditHistoryContent extends StatelessWidget {
           barrierColor: Colors.black54,
           constraints: const BoxConstraints(),
           context: context,
-          builder: (ctx) {
-            return CustomModalBottomSheet(
-              height: 300,
-              content: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const TextView(
-                      text: 'Acciones de la Tabla',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const SizedBox(height: 15),
-                    const Icon(
-                      Icons.table_view_rounded,
-                      size: 60,
-                      color: Color.fromARGB(255, 0, 90, 126),
-                    ),
-                    const SizedBox(height: 25),
-                    CustomButton(
-                      isAppColor: false,
-                      text: 'Ver Contenido',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      text: 'Descargar Tabla',
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            );
+          builder: (context) {
+            return _buildBottomContentModal(context);
           },
         );
       },
     );
   }
 
-  // Widget _buildMenuOption({
-  //   required String title,
-  //   required void Function() onTap,
-  //   IconData? icon,
-  // }) {
-  //   return Card(
-  //     elevation: 1.2,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //     color: const Color.fromARGB(255, 230, 230, 230),
-  //     child: ListTile(
-  //       leading: icon == null ? Icon(icon, color: Colors.black) : null,
-  //       title: TextView(
-  //         text: title,
-  //         fontWeight: FontWeight.bold,
-  //         color: Colors.black,
-  //       ),
-  //       onTap: onTap,
-  //     ),
-  //   );
-  // }
+  Widget _buildBottomContentModal(BuildContext context) {
+    return CustomModalBottomSheet(
+      height: 300,
+      content: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TextView(
+              text: 'Acciones de la Tabla',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            const SizedBox(height: 15),
+            const Icon(
+              Icons.table_view_rounded,
+              size: 60,
+              color: Color.fromARGB(255, 0, 90, 126),
+            ),
+            const SizedBox(height: 25),
+            CustomButton(
+              isAppColor: false,
+              text: 'Ver Contenido',
+              onPressed: () {
+                showDialog(
+                    barrierColor: Colors.black,
+                    context: context,
+                    builder: (context) {
+                      return _buildTableContentModalView();
+                    });
+              },
+            ),
+            const SizedBox(height: 10),
+            CustomButton(
+              text: 'Descargar Tabla',
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ModalView _buildTableContentModalView() {
+    return const ModalView(
+      heightFactor: .65,
+      widthFactor: .9,
+      content: Column(
+        children: [BlocBuilder<LoanCubit, LoanState>(builder: (context))],
+      ),
+    );
+  }
 
   Widget historyPageHeader() {
     return const Column(
