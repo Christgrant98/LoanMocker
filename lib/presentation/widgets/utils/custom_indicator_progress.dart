@@ -10,7 +10,7 @@ class CustomIndicatorProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoActivityIndicator(
-      color: const Color.fromARGB(255, 84, 40, 241),
+      color: const Color.fromARGB(255, 0, 90, 126),
       radius: radius ?? 14,
     );
   }

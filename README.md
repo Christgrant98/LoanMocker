@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # cw-bank-credit
 =======
-# cw_bank_credit
+# loanMocker
 
 A new Flutter project.
 >>>>>>> master

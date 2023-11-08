@@ -1,5 +1,5 @@
-import 'package:cw_bank_credit/presentation/pages/credit_history_page.dart';
-import 'package:cw_bank_credit/presentation/pages/credit_simulator_page.dart';
+import 'package:loanMocker/presentation/pages/credit_history_page.dart';
+import 'package:loanMocker/presentation/pages/credit_simulator_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

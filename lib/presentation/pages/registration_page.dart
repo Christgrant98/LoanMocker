@@ -1,5 +1,5 @@
-import 'package:cw_bank_credit/presentation/layout.dart';
-import 'package:cw_bank_credit/presentation/router/app_router.dart';
+import 'package:loanMocker/presentation/layout.dart';
+import 'package:loanMocker/presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 import '../forms/registration_form.dart';

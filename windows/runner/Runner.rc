@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "cw_bank_credit" "\0"
+            VALUE "FileDescription", "loanMocker" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "cw_bank_credit" "\0"
+            VALUE "InternalName", "loanMocker" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "cw_bank_credit.exe" "\0"
-            VALUE "ProductName", "cw_bank_credit" "\0"
+            VALUE "OriginalFilename", "loanMocker.exe" "\0"
+            VALUE "ProductName", "loanMocker" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

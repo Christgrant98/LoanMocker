@@ -1,4 +1,4 @@
-import 'package:cw_bank_credit/presentation/widgets/utils/text_view.dart';
+import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -26,12 +26,12 @@ class CustomButton extends StatelessWidget {
       height: height ?? 50,
       decoration: BoxDecoration(
         color: isAppColor
-            ? const Color.fromARGB(255, 84, 40, 241)
+            ? const Color.fromARGB(255, 0, 90, 126)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(borderRadius ?? 8),
         border: isAppColor
             ? null
-            : Border.all(color: const Color.fromARGB(255, 84, 40, 241)),
+            : Border.all(color: const Color.fromARGB(255, 0, 90, 126)),
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -46,9 +46,8 @@ class CustomButton extends StatelessWidget {
           text: text,
           fontWeight: FontWeight.w900,
           fontSize: 15,
-          color: isAppColor
-              ? Colors.white
-              : const Color.fromARGB(255, 84, 40, 241),
+          color:
+              isAppColor ? Colors.white : const Color.fromARGB(255, 0, 90, 126),
         ),
       ),
     );

@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:cw_bank_credit/logic/states/auth_states.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_alert_dialog.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_indicator_progress.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/text_view.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/name_form_field.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/success_registration_modal_page.dart';
+import 'package:loanMocker/logic/states/auth_states.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_alert_dialog.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_indicator_progress.dart';
+import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
+import 'package:loanMocker/presentation/widgets/utils/name_form_field.dart';
+import 'package:loanMocker/presentation/widgets/utils/success_registration_modal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3),
                     ),
-                    activeColor: const Color.fromARGB(255, 84, 40, 241),
+                    activeColor: const Color.fromARGB(255, 0, 90, 126),
                     value: isSelected,
                     onChanged: (_) => setState(() => isSelected = !isSelected),
                   ),
@@ -139,7 +139,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     content: Icon(
                       CupertinoIcons.exclamationmark_octagon,
                       size: 60,
-                      color: Color.fromARGB(255, 84, 40, 241),
+                      color: Color.fromARGB(255, 0, 90, 126),
                     ),
                   ),
                 );
@@ -187,20 +187,20 @@ class _RegistrationFormState extends State<RegistrationForm> {
               TextSpan(
                   text: 'Términos ',
                   style:
-                      const TextStyle(color: Color.fromARGB(255, 84, 40, 241)),
+                      const TextStyle(color: Color.fromARGB(255, 0, 90, 126)),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => showTermsDialog()),
               const TextSpan(text: 'y '),
               TextSpan(
                 text: 'Condiciones ',
-                style: const TextStyle(color: Color.fromARGB(255, 84, 40, 241)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 90, 126)),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => showTermsDialog(),
               ),
               const TextSpan(text: 'y la '),
               TextSpan(
                 text: 'Política de privacidad ',
-                style: const TextStyle(color: Color.fromARGB(255, 84, 40, 241)),
+                style: const TextStyle(color: Color.fromARGB(255, 0, 90, 126)),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => showTermsDialog(),
               ),

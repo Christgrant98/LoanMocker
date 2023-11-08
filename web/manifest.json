@@ -1,6 +1,6 @@
 {
-    "name": "cw_bank_credit",
-    "short_name": "cw_bank_credit",
+    "name": "loanMocker",
+    "short_name": "loanMocker",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

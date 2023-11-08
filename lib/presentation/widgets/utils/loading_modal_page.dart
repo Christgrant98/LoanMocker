@@ -24,7 +24,7 @@ class LoadingModalPage extends StatelessWidget {
               SizedBox(height: 15),
               TextView(
                   text: 'Simulando Credito',
-                  color: Color.fromARGB(255, 84, 40, 241),
+                  color: Color.fromARGB(255, 0, 90, 126),
                   fontWeight: FontWeight.bold,
                   fontSize: 20)
             ],

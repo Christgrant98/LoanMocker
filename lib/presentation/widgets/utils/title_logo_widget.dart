@@ -1,4 +1,4 @@
-import 'package:cw_bank_credit/presentation/widgets/utils/text_view.dart';
+import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,7 +17,7 @@ class TitleLogoWidget extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         const TextView(
-            text: 'Banca créditos',
+            text: 'Loan Mocker',
             color: Colors.black,
             fontSize: 23.5,
             fontWeight: FontWeight.bold),

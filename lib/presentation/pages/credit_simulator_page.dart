@@ -1,4 +1,4 @@
-import 'package:cw_bank_credit/presentation/layout.dart';
+import 'package:loanMocker/presentation/layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +49,7 @@ class CreditSimulatorPage extends StatelessWidget {
                               text: 'Simulador de credito ',
                               style: TextStyle(
                                   fontFamily: 'ProductSans',
-                                  color: Color.fromARGB(255, 84, 40, 241),
+                                  color: Color.fromARGB(255, 0, 90, 126),
                                   fontWeight: FontWeight.w900,
                                   fontSize: 25),
                               children: [TextSpan(text: 'ⓘ')])),
@@ -95,7 +95,7 @@ class CreditSimulatorPage extends StatelessWidget {
   //               text: 'Simulador de credito ',
   //               style: TextStyle(
   //                   fontFamily: 'ProductSans',
-  //                   color: Color.fromARGB(255, 84, 40, 241),
+  //                   color: Color.fromARGB(255, 0, 90, 126),
   //                   fontWeight: FontWeight.w900,
   //                   fontSize: 25),
   //               children: [TextSpan(text: 'ⓘ')])),

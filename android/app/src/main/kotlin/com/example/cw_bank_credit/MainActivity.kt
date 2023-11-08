@@ -1,4 +1,4 @@
-package com.example.cw_bank_credit
+package com.example.loanMocker
 
 import io.flutter.embedding.android.FlutterActivity
 

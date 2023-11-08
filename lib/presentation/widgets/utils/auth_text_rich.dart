@@ -28,7 +28,7 @@ class AuthTextRich extends StatelessWidget {
             text: actionLinkText,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 84, 40, 241),
+              color: Color.fromARGB(255, 0, 90, 126),
             ),
             recognizer: TapGestureRecognizer()..onTap = () => onTap(),
           ),

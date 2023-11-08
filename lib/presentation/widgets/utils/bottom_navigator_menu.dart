@@ -24,7 +24,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      selectedItemColor: const Color.fromARGB(255, 84, 40, 241),
+      selectedItemColor: const Color.fromARGB(255, 0, 90, 126),
       selectedLabelStyle: const TextStyle(
         fontSize: 12,
         fontFamily: 'ProductSans',

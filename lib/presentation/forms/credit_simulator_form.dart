@@ -1,10 +1,10 @@
-import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/base_salary_form_field.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/credit_type_form_field.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/loan_amount_form_field.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/xmark_button.dart';
+import 'package:loanMocker/logic/cubits/loan_cubit.dart';
+import 'package:loanMocker/presentation/widgets/utils/base_salary_form_field.dart';
+import 'package:loanMocker/presentation/widgets/utils/credit_type_form_field.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
+import 'package:loanMocker/presentation/widgets/utils/loan_amount_form_field.dart';
+import 'package:loanMocker/presentation/widgets/utils/xmark_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -154,7 +154,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                             '*Este valor suele cambiar con respecto a tu salario',
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
-                        color: Color.fromARGB(255, 84, 40, 241),
+                        color: Color.fromARGB(255, 0, 90, 126),
                       ),
                     ],
                   ),

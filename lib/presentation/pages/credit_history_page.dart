@@ -1,4 +1,4 @@
-import 'package:cw_bank_credit/presentation/layout.dart';
+import 'package:loanMocker/presentation/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -151,7 +151,7 @@ class CreditHistoryPage extends StatelessWidget {
         child: Icon(
           Icons.info_outline_rounded,
           size: 18,
-          color: Color.fromARGB(255, 84, 40, 241),
+          color: Color.fromARGB(255, 0, 90, 126),
         ),
       ),
       onTap: () {},

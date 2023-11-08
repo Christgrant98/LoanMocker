@@ -1,7 +1,7 @@
-import 'package:cw_bank_credit/logic/cubits/loan_cubit.dart';
-import 'package:cw_bank_credit/logic/states/loan_state.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/currency_format_text.dart';
-import 'package:cw_bank_credit/presentation/widgets/utils/custom_button.dart';
+import 'package:loanMocker/logic/cubits/loan_cubit.dart';
+import 'package:loanMocker/logic/states/loan_state.dart';
+import 'package:loanMocker/presentation/widgets/utils/currency_format_text.dart';
+import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,7 +155,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
             const Expanded(
               child: TextView(
                   text: 'Resultado de tu simulador de credito',
-                  color: Color.fromARGB(255, 84, 40, 241),
+                  color: Color.fromARGB(255, 0, 90, 126),
                   fontWeight: FontWeight.w900,
                   fontSize: 25),
             ),

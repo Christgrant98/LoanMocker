@@ -1,4 +1,4 @@
-import 'package:cw_bank_credit/presentation/layout.dart';
+import 'package:loanMocker/presentation/layout.dart';
 import 'package:flutter/material.dart';
 
 import '../forms/login_form.dart';
