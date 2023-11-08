@@ -20,10 +20,10 @@ class PasswordFormField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PasswordFormFieldState createState() => _PasswordFormFieldState();
+  PasswordFormFieldState createState() => PasswordFormFieldState();
 }
 
-class _PasswordFormFieldState extends State<PasswordFormField> {
+class PasswordFormFieldState extends State<PasswordFormField> {
   bool obscureText = true;
 
   @override
@@ -40,7 +40,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         const SizedBox(height: 10),
         BaseTextFormField(
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(10),
+            contentPadding: const EdgeInsets.all(10),
             prefixIcon: InkWell(
               onTap: () {
                 setState(() {
