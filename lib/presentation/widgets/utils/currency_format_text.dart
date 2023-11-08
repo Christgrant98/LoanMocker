@@ -10,7 +10,8 @@ class CurrencyFormattedText extends StatelessWidget {
   final double? fontSize;
   final TextAlign? textAlign;
 
-  CurrencyFormattedText({
+  const CurrencyFormattedText({
+    super.key,
     required this.amount,
     this.color,
     this.fontWeight,
