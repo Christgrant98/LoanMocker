@@ -138,7 +138,7 @@ class CreditHistoryContent extends StatelessWidget {
           context: context,
           builder: (ctx) {
             return CustomModalBottomSheet(
-              height: 250,
+              height: 300,
               content: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -148,6 +148,12 @@ class CreditHistoryContent extends StatelessWidget {
                       text: 'Acciones de la Tabla',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(height: 15),
+                    const Icon(
+                      Icons.table_view_rounded,
+                      size: 60,
+                      color: Color.fromARGB(255, 0, 90, 126),
                     ),
                     const SizedBox(height: 25),
                     CustomButton(
@@ -160,6 +166,7 @@ class CreditHistoryContent extends StatelessWidget {
                       text: 'Descargar Tabla',
                       onPressed: () => Navigator.of(context).pop(),
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
