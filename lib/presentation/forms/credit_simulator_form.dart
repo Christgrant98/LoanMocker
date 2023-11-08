@@ -97,13 +97,15 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   }
 
   _buildModalLoanPreview() => showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black,
-      context: context,
-      constraints: const BoxConstraints(),
-      builder: (context) =>
-          CustomModalBottomSheet(content: loanPreviewContent()));
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.black,
+        context: context,
+        constraints: const BoxConstraints(),
+        builder: (context) => CustomModalBottomSheet(
+          content: loanPreviewContent(),
+        ),
+      );
 
   void _showLoadingModal(BuildContext context) {
     showDialog(
@@ -148,11 +150,12 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                       ),
                       const SizedBox(height: 10),
                       const TextView(
-                          text:
-                              '*Este valor suele cambiar con respecto a tu salario',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Color.fromARGB(255, 84, 40, 241)),
+                        text:
+                            '*Este valor suele cambiar con respecto a tu salario',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color.fromARGB(255, 84, 40, 241),
+                      ),
                     ],
                   ),
                 ),
