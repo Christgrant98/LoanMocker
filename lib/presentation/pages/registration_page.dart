@@ -56,7 +56,7 @@ class RegistrationPage extends StatelessWidget {
         SizedBox(height: 2.5),
         TextView(
             text: 'Solo te tomará unos minutos.',
-            color: Color.fromARGB(255, 189, 199, 232),
+            color: Color.fromARGB(140, 0, 90, 126),
             fontSize: 15,
             fontWeight: FontWeight.bold),
       ],

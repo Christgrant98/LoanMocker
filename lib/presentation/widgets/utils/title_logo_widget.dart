@@ -17,10 +17,11 @@ class TitleLogoWidget extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         const TextView(
-            text: 'Loan Mocker',
-            color: Colors.black,
-            fontSize: 23.5,
-            fontWeight: FontWeight.bold),
+          text: 'Loan Mocker',
+          color: Colors.black,
+          fontSize: 23.5,
+          fontWeight: FontWeight.bold,
+        ),
       ],
     );
   }
