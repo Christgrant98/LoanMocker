@@ -202,9 +202,22 @@ class CreditHistoryContent extends StatelessWidget {
     return const ModalView(
       heightFactor: .65,
       widthFactor: .9,
-      content: Column(
-        children: [BlocBuilder<LoanCubit, LoanState>(builder: (context))],
-      ),
+      content: Column(children: [
+        BlocBuilder<LoanCubit, LoanState>(
+      builder: (context, state) {
+        if (state.loan == null) return Container();
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 15),
+            SimulatorTable(
+              loan: state.loan!,
+            ),
+          ],
+        );
+      },
+    );
+      ],),
     );
   }
 
