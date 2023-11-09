@@ -122,9 +122,9 @@ class CreditHistoryContent extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return _buildBottomContentModal(
-                          context,
-                          allLoans,
-                          loans.indexOf(loan),
+                          context: context,
+                          loans: allLoans,
+                          selectedIndex: loans.indexOf(loan),
                         );
                       },
                     );
@@ -140,12 +140,12 @@ class CreditHistoryContent extends StatelessWidget {
     return rows;
   }
 
-  CustomModalBottomSheet _buildBottomContentModal(
-    BuildContext context,
-    List<Loan> allLoans,
-    int selectedIndex,
-  ) {
-    Loan currentLoan = allLoans[selectedIndex];
+  CustomModalBottomSheet _buildBottomContentModal({
+    required BuildContext context,
+    required List<Loan> loans,
+    required int selectedIndex,
+  }) {
+    Loan currentLoan = loans[selectedIndex];
 
     return CustomModalBottomSheet(
       height: 300,
@@ -171,7 +171,7 @@ class CreditHistoryContent extends StatelessWidget {
               text: 'Ver Contenido',
               onPressed: () {
                 showDialog(
-                    barrierColor: Color.fromARGB(134, 0, 70, 97),
+                    barrierColor: const Color.fromARGB(134, 0, 70, 97),
                     context: context,
                     builder: (BuildContext context) {
                       return ModalView(
@@ -189,7 +189,7 @@ class CreditHistoryContent extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: TextView(
                                       text:
-                                          'Contenido de la tabla ${selectedIndex + 1} ',
+                                          'Contenido de Credito #${selectedIndex + 1}',
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
