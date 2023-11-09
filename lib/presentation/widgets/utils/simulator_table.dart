@@ -115,8 +115,9 @@ class SimulatorTable extends StatelessWidget {
         } else if (i == 5) {
           cells.add(
             TableCell(
-                child: CurrencyFormattedText(
-                    amount: balance, fontSize: 8, textAlign: TextAlign.center)),
+              child: CurrencyFormattedText(
+                  amount: balance, fontSize: 8, textAlign: TextAlign.center),
+            ),
           );
         }
       }
