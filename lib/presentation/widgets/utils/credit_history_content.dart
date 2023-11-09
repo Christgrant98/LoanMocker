@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loanMocker/data/models/loan.dart';
 import 'package:loanMocker/logic/cubits/loan_cubit.dart';
-import 'package:loanMocker/logic/states/loan_state.dart';
 import 'package:loanMocker/presentation/widgets/utils/currency_format_text.dart';
 import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
 import 'package:loanMocker/presentation/widgets/utils/custom_modal_bottom_sheet.dart';
@@ -85,7 +84,7 @@ class CreditHistoryContent extends StatelessWidget {
     ];
 
     for (final loan in loans) {
-      Loan? currentLoan = context.read<LoanCubit>().getCurrentLoan();
+      Loan? currentLoan = context.watch<LoanCubit>().getCurrentLoan();
       rows.add(
         TableRow(
           children: [
@@ -120,59 +119,7 @@ class CreditHistoryContent extends StatelessWidget {
                       constraints: const BoxConstraints(),
                       context: context,
                       builder: (context) {
-                        return CustomModalBottomSheet(
-                          height: 300,
-                          content: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const TextView(
-                                  text: 'Acciones de la Tabla',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                const SizedBox(height: 15),
-                                const Icon(
-                                  Icons.table_view_rounded,
-                                  size: 60,
-                                  color: Color.fromARGB(255, 0, 90, 126),
-                                ),
-                                const SizedBox(height: 25),
-                                CustomButton(
-                                  isAppColor: false,
-                                  text: 'Ver Contenido',
-                                  onPressed: () {
-                                    showDialog(
-                                        barrierColor: Colors.black,
-                                        context: context,
-                                        builder: (BuildContext modalContext) {
-                                          return ModalView(
-                                            heightFactor: .65,
-                                            widthFactor: .9,
-                                            content: SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  SimulatorTable(
-                                                    loan: currentLoan!,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                CustomButton(
-                                  text: 'Descargar Tabla',
-                                  onPressed: () => Navigator.of(context).pop(),
-                                ),
-                                const SizedBox(height: 10),
-                              ],
-                            ),
-                          ),
-                        );
+                        return _buildBottomContentModal(context, currentLoan);
                       },
                     );
                   },
@@ -187,105 +134,8 @@ class CreditHistoryContent extends StatelessWidget {
     return rows;
   }
 
-  Widget _buildTableCell({
-    required String text,
-  }) {
-    return TableCell(
-      child: Center(
-        child: TextView(
-          fontWeight: FontWeight.bold,
-          text: text,
-          textAlign: TextAlign.center,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionBttn(
-    BuildContext context,
-  ) {
-    return InkWell(
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.info_outline_rounded,
-          size: 18,
-          color: Color.fromARGB(255, 0, 90, 126),
-        ),
-      ),
-      onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          barrierColor: Colors.black54,
-          constraints: const BoxConstraints(),
-          context: context,
-          builder: (context) {
-            return CustomModalBottomSheet(
-              height: 300,
-              content: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const TextView(
-                      text: 'Acciones de la Tabla',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const SizedBox(height: 15),
-                    const Icon(
-                      Icons.table_view_rounded,
-                      size: 60,
-                      color: Color.fromARGB(255, 0, 90, 126),
-                    ),
-                    const SizedBox(height: 25),
-                    CustomButton(
-                      isAppColor: false,
-                      text: 'Ver Contenido',
-                      onPressed: () {
-                        showDialog(
-                            barrierColor: Colors.black,
-                            context: context,
-                            builder: (BuildContext modalContext) =>
-                                BlocProvider.value(
-                                  value: context.read<LoanCubit>(),
-                                  child: ModalView(
-                                    heightFactor: .65,
-                                    widthFactor: .9,
-                                    content: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          SimulatorTable(
-                                            loan: context
-                                                .read<LoanCubit>()
-                                                .getCurrentLoan()!,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ));
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      text: 'Descargar Tabla',
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomContentModal(BuildContext context) {
+  CustomModalBottomSheet _buildBottomContentModal(
+      BuildContext context, Loan? currentLoan) {
     return CustomModalBottomSheet(
       height: 300,
       content: Padding(
@@ -312,24 +162,21 @@ class CreditHistoryContent extends StatelessWidget {
                 showDialog(
                     barrierColor: Colors.black,
                     context: context,
-                    builder: (BuildContext modalContext) => BlocProvider.value(
-                          value: context.read<LoanCubit>(),
-                          child: ModalView(
-                            heightFactor: .65,
-                            widthFactor: .9,
-                            content: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  SimulatorTable(
-                                    loan: context
-                                        .read<LoanCubit>()
-                                        .getCurrentLoan()!,
-                                  ),
-                                ],
+                    builder: (BuildContext context) {
+                      return ModalView(
+                        heightFactor: .8,
+                        widthFactor: .9,
+                        content: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SimulatorTable(
+                                loan: currentLoan!,
                               ),
-                            ),
+                            ],
                           ),
-                        ));
+                        ),
+                      );
+                    });
               },
             ),
             const SizedBox(height: 10),
@@ -344,19 +191,16 @@ class CreditHistoryContent extends StatelessWidget {
     );
   }
 
-  ModalView _buildTableContentModalView({
-    required Loan loan,
+  Widget _buildTableCell({
+    required String text,
   }) {
-    return ModalView(
-      heightFactor: .65,
-      widthFactor: .9,
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            SimulatorTable(
-              loan: loan,
-            ),
-          ],
+    return TableCell(
+      child: Center(
+        child: TextView(
+          fontWeight: FontWeight.bold,
+          text: text,
+          textAlign: TextAlign.center,
+          fontSize: 12,
         ),
       ),
     );
