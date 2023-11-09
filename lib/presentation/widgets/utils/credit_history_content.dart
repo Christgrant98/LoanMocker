@@ -84,7 +84,7 @@ class CreditHistoryContent extends StatelessWidget {
     ];
 
     for (final loan in loans) {
-      Loan? currentLoan = context.watch<LoanCubit>().getCurrentLoan();
+      List<Loan> allLoans = context.watch<LoanCubit>().state.loansData;
       rows.add(
         TableRow(
           children: [
@@ -119,7 +119,11 @@ class CreditHistoryContent extends StatelessWidget {
                       constraints: const BoxConstraints(),
                       context: context,
                       builder: (context) {
-                        return _buildBottomContentModal(context, currentLoan);
+                        return _buildBottomContentModal(
+                          context,
+                          allLoans,
+                          loans.indexOf(loan),
+                        );
                       },
                     );
                   },
@@ -135,7 +139,12 @@ class CreditHistoryContent extends StatelessWidget {
   }
 
   CustomModalBottomSheet _buildBottomContentModal(
-      BuildContext context, Loan? currentLoan) {
+    BuildContext context,
+    List<Loan> allLoans,
+    int selectedIndex,
+  ) {
+    Loan currentLoan = allLoans[selectedIndex];
+
     return CustomModalBottomSheet(
       height: 300,
       content: Padding(
@@ -170,7 +179,7 @@ class CreditHistoryContent extends StatelessWidget {
                           child: Column(
                             children: [
                               SimulatorTable(
-                                loan: currentLoan!,
+                                loan: currentLoan,
                               ),
                             ],
                           ),
