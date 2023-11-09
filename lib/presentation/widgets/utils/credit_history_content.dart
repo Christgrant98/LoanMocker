@@ -9,6 +9,8 @@ import 'package:loanMocker/presentation/widgets/utils/modal_view.dart';
 import 'package:loanMocker/presentation/widgets/utils/simulator_table.dart';
 import 'package:loanMocker/presentation/widgets/utils/text_view.dart';
 
+import 'xmark_button.dart';
+
 class CreditHistoryContent extends StatelessWidget {
   const CreditHistoryContent({
     super.key,
@@ -169,17 +171,39 @@ class CreditHistoryContent extends StatelessWidget {
               text: 'Ver Contenido',
               onPressed: () {
                 showDialog(
-                    barrierColor: Colors.black,
+                    barrierColor: Color.fromARGB(134, 0, 70, 97),
                     context: context,
                     builder: (BuildContext context) {
                       return ModalView(
-                        heightFactor: .8,
+                        paddingValue: 7.5,
+                        heightFactor: .75,
                         widthFactor: .9,
                         content: SingleChildScrollView(
-                          child: Column(
+                          child: Stack(
                             children: [
-                              SimulatorTable(
-                                loan: currentLoan,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 30),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: TextView(
+                                      text:
+                                          'Contenido de la tabla ${selectedIndex + 1} ',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SimulatorTable(
+                                    loan: currentLoan,
+                                  ),
+                                ],
+                              ),
+                              const Positioned(
+                                right: 0,
+                                top: 0,
+                                child: XmarkButton(),
                               ),
                             ],
                           ),

@@ -46,7 +46,7 @@ class SimulatorTable extends StatelessWidget {
         );
       } else if (i == 5) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Saldo del periodo'),
+          _buildTableCellHeader(text: 'Saldo periodo'),
         );
       }
     }
@@ -131,15 +131,16 @@ class SimulatorTable extends StatelessWidget {
   TableCell _buildTableCellHeader({
     required String text,
   }) {
-    return const TableCell(
+    return TableCell(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Center(
           child: TextView(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-              textAlign: TextAlign.center,
-              text: 'Saldo inicial'),
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+            textAlign: TextAlign.center,
+            text: text,
+          ),
         ),
       ),
     );
