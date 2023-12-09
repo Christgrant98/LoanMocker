@@ -9,6 +9,7 @@ class BaseSalaryFormField extends StatelessWidget {
   final void Function(String?, bool) onValueChange;
   final String? initialValue;
   final void Function(String)? onFieldSubmitted;
+
   const BaseSalaryFormField({
     Key? key,
     required this.onValueChange,
@@ -23,10 +24,11 @@ class BaseSalaryFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const TextView(
-            text: 'Cuanto es tu salario  base?',
-            color: Colors.black,
-            fontSize: 12,
-            fontWeight: FontWeight.bold),
+          text: 'What is your base salary?',
+          color: Colors.black,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
         const SizedBox(height: 10),
         BaseTextFormField(
           keyboardType: TextInputType.number,
@@ -41,13 +43,13 @@ class BaseSalaryFormField extends StatelessWidget {
               fontWeight: FontWeight.w300,
               fontFamily: 'ProductSans',
             ),
-            helperText:
-                'Digita tu salario para calcular el prestamo que necesitas',
+            helperText: 'Enter your salary to calculate the loan you need',
             hintText: '\$10\'000.000,00',
             hintStyle: TextStyle(
-                fontFamily: 'ProductSans',
-                color: Color.fromARGB(255, 190, 190, 190),
-                fontSize: 12),
+              fontFamily: 'ProductSans',
+              color: Color.fromARGB(255, 190, 190, 190),
+              fontSize: 12,
+            ),
           ),
           onChanged: onValueChange,
           onFieldSubmitted: onFieldSubmitted,

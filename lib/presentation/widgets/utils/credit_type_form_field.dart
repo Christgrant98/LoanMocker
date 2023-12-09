@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'text_view.dart';
 
+import 'package:flutter/material.dart';
+
 class CreditTypeFormField extends StatefulWidget {
   final void Function(String?, double?) onChange;
   final List<String> creditTypes;
   final Map<String, double> creditRates;
 
   const CreditTypeFormField({
-    super.key,
+    Key? key,
     required this.creditTypes,
     required this.onChange,
     required this.creditRates,
-  });
+  }) : super(key: key);
 
   @override
   State<CreditTypeFormField> createState() => _CreditTypeFormFieldState();
@@ -29,7 +31,7 @@ class _CreditTypeFormFieldState extends State<CreditTypeFormField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const TextView(
-          text: 'Que tipo de credito deseas realizar?',
+          text: 'What type of credit do you want to apply for?',
           color: Colors.black,
           fontSize: 12,
           fontWeight: FontWeight.bold,
@@ -44,16 +46,15 @@ class _CreditTypeFormFieldState extends State<CreditTypeFormField> {
           decoration: defaultDecoration,
           value: selectedCreditType,
           hint: const TextView(
-            text: 'Selecciona el tipo de credito',
+            text: 'Select the credit type',
             color: Color.fromARGB(255, 190, 190, 190),
             fontSize: 12,
           ),
           onChanged: (newValue) {
             setState(() {
               selectedCreditType = newValue;
-              double? selectedRate = widget
-                  .creditRates[newValue]; // Buscamos la tasa correspondiente
-              widget.onChange(newValue, selectedRate); // Pasamos ambos valores
+              double? selectedRate = widget.creditRates[newValue];
+              widget.onChange(newValue, selectedRate);
             });
           },
           items: widget.creditTypes.map((String creditType) {

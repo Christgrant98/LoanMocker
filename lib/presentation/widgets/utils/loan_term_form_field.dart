@@ -5,10 +5,14 @@ import 'package:flutter/services.dart';
 
 import 'text_view.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 class LoanTermFormField extends StatefulWidget {
   final void Function(String?, bool) onChange;
   final String? initialValue;
   final void Function(String)? onFieldSubmitted;
+
   const LoanTermFormField({
     Key? key,
     required this.onChange,
@@ -30,7 +34,7 @@ class _LoanTermFormFieldState extends State<LoanTermFormField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const TextView(
-          text: 'A cuantos meses?',
+          text: 'For how many months?',
           color: Colors.black,
           fontSize: 12,
           fontWeight: FontWeight.bold,
@@ -41,30 +45,31 @@ class _LoanTermFormFieldState extends State<LoanTermFormField> {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
             FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(2)
+            LengthLimitingTextInputFormatter(2),
           ],
           decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              hintText: '48',
-              hintStyle: TextStyle(
-                color: Color.fromARGB(255, 190, 190, 190),
-                fontSize: 12,
-                fontFamily: 'ProductSans',
-              ),
-              helperStyle: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w300,
-                fontFamily: 'ProductSans',
-              ),
-              helperText: 'Elige un plazo desde 12 hasta 84 meses',
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              filled: true,
-              fillColor: Colors.white),
+            contentPadding: EdgeInsets.all(10),
+            hintText: '48',
+            hintStyle: TextStyle(
+              color: Color.fromARGB(255, 190, 190, 190),
+              fontSize: 12,
+              fontFamily: 'ProductSans',
+            ),
+            helperStyle: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w300,
+              fontFamily: 'ProductSans',
+            ),
+            helperText: 'Choose a term from 12 to 84 months',
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            filled: true,
+            fillColor: Colors.white,
+          ),
           onChanged: widget.onChange,
           validator: (value) {
             final int enteredValue = int.tryParse(value!) ?? -1;
             if (enteredValue < minTerm || enteredValue > maxTerm) {
-              return 'Ingresa un número entre $minTerm y $maxTerm';
+              return 'Enter a number between $minTerm and $maxTerm';
             }
             return null;
           },
