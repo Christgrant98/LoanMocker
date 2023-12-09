@@ -1,3 +1,5 @@
+import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:loanMocker/logic/cubits/loan_cubit.dart';
 import 'package:loanMocker/logic/states/loan_state.dart';
 import 'package:loanMocker/presentation/widgets/utils/custom_button.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../data/models/loan.dart';
 import '../layout.dart';
@@ -16,8 +19,38 @@ import '../widgets/utils/text_view.dart';
 import '../widgets/utils/bottom_navigator_menu.dart';
 import '../widgets/utils/xmark_button.dart';
 
-class CreditSimulationResultsPage extends StatelessWidget {
-  const CreditSimulationResultsPage({super.key});
+class CreditSimulationResultsPage extends StatefulWidget {
+  const CreditSimulationResultsPage({Key? key});
+
+  @override
+  State<CreditSimulationResultsPage> createState() =>
+      _CreditSimulationResultsPageState();
+}
+
+class _CreditSimulationResultsPageState
+    extends State<CreditSimulationResultsPage> {
+  exportToExcel() {
+    print('Starting Excel export...');
+    try {
+      final excel = Excel.createExcel();
+      final sheet = excel.sheets[excel.getDefaultSheet() as String];
+
+      sheet!.setColumnWidth(2, 50);
+      sheet.setColumnAutoFit(3);
+
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 3))
+          .value = 'Text for test';
+
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 4))
+          .value = 'Text for test name 2';
+      excel.save();
+      print('Excel export completed.');
+    } catch (e) {
+      print('Error exporting to Excel: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +70,34 @@ class CreditSimulationResultsPage extends StatelessWidget {
                     height: 100,
                   ),
                   creditSimulatorResultHeader(),
-                  SizedBox(
-                    width: constraints.maxWidth * .85,
-                    child: _buildTable(),
+                  BlocBuilder<LoanCubit, LoanState>(
+                    builder: (context, state) {
+                      if (state.loan == null) return Container();
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 15),
+                          SimulatorTable(
+                            loan: state.loan!,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(onPressed: () {}, text: 'Descargar tabla'),
+                  CustomButton(
+                    text: 'Download table',
+                    onPressed: () async {
+                      if (kIsWeb) {
+                        exportToExcel();
+                      } else {
+                        var status = await Permission.storage.request();
+                        if (status.isGranted) {
+                          exportToExcel();
+                        }
+                      }
+                    },
+                  ),
                   const SizedBox(height: 8),
                   CustomButton(
                     onPressed: () {
@@ -55,7 +110,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
                           builder: (_) =>
                               _buildBottomModalContent(context, loan));
                     },
-                    text: 'Guardar cotizacion',
+                    text: 'Save quote',
                     isAppColor: false,
                   ),
                   const SizedBox(height: 20),
@@ -94,7 +149,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       TextView(
-                        text: 'Esta seguro que desea Guardar la cotizacion?',
+                        text: 'Are you sure you want to save the quote?',
                         fontWeight: FontWeight.w900,
                         fontSize: 25,
                         textAlign: TextAlign.center,
@@ -102,7 +157,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
                       SizedBox(height: 20),
                       TextView(
                         text:
-                            'La cotizacion realizada la podras consultar en tu historial de creditos.',
+                            'You will be able to consult the quote made in your credit history.',
                         fontWeight: FontWeight.w300,
                         textAlign: TextAlign.center,
                         fontSize: 18,
@@ -113,7 +168,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
               ),
               const Spacer(),
               CustomButton(
-                text: 'Guardar',
+                text: 'Save',
                 onPressed: () {
                   context.read<LoanCubit>().saveLoanData(loan!);
                   Navigator.pushReplacementNamed(
@@ -122,7 +177,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               CustomButton(
-                text: 'Cancelar',
+                text: 'Cancel',
                 isAppColor: false,
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -149,7 +204,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
           children: [
             const Expanded(
               child: TextView(
-                  text: 'Resultado de tu simulador de credito',
+                  text: 'Result of your credit simulator',
                   color: Color.fromARGB(255, 0, 90, 126),
                   fontWeight: FontWeight.w900,
                   fontSize: 25),
@@ -166,7 +221,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
         const SizedBox(height: 15),
         const TextView(
             text:
-                'Te presentamos en tu table de amortizacion el resultado del movimiento de tu credito.',
+                'We present to you in your amortization table the result of your credit movement.',
             fontWeight: FontWeight.w300,
             fontSize: 16),
         const SizedBox(height: 20),
@@ -174,7 +229,7 @@ class CreditSimulationResultsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextView(
-                text: 'Tabla de creditos',
+                text: 'Credit table',
                 color: Colors.black,
                 fontWeight: FontWeight.w900,
                 fontSize: 20),

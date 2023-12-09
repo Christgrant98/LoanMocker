@@ -16,7 +16,7 @@ import '../widgets/utils/text_view.dart';
 import '../widgets/utils/loan_term_form_field.dart';
 
 class CreditSimulatorForm extends StatefulWidget {
-  const CreditSimulatorForm({super.key});
+  const CreditSimulatorForm({Key? key}) : super(key: key);
 
   @override
   State<CreditSimulatorForm> createState() => _CreditSimulatorFormState();
@@ -27,9 +27,9 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
   double? loanAmount;
 
   Map<String, double> creditRates = {
-    'Crédito de vehiculo': 0.03,
-    'Crédito de vivienda': 0.01,
-    'Crédito de libre inversión': 0.035,
+    'Vehicle Credit': 0.03,
+    'Home Credit': 0.01,
+    'Personal Investment Credit': 0.035,
   };
   double? creditRate;
   double? baseSalary;
@@ -74,7 +74,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
           ),
           const SizedBox(height: 25),
           CustomButton(
-            text: 'Simular',
+            text: 'Simulate',
             onPressed: () {
               _buildModalLoanPreview();
               context.read<LoanCubit>().setLoan(_buildLoan());
@@ -138,7 +138,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const TextView(
-                        text: 'Cuota maxima de prestamo',
+                        text: 'Maximum Loan Installment',
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                       ),
@@ -151,7 +151,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                       const SizedBox(height: 10),
                       const TextView(
                         text:
-                            '*Este valor suele cambiar con respecto a tu salario',
+                            '*This value usually changes with respect to your salary',
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                         color: Color.fromARGB(255, 0, 90, 126),
@@ -164,7 +164,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TextView(
-                      text: 'Tasa Efectiva Anual desde',
+                      text: 'Annual Effective Rate from',
                       fontSize: 17,
                       fontWeight: FontWeight.w300,
                     ),
@@ -180,7 +180,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TextView(
-                      text: 'Tasa Mensual Vencida desde',
+                      text: 'Monthly Rate in Arrears from',
                       fontSize: 17,
                       fontWeight: FontWeight.w300,
                     ),
@@ -196,7 +196,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TextView(
-                      text: 'Valor total prestamo',
+                      text: 'Total Loan Amount',
                       fontSize: 17,
                       fontWeight: FontWeight.w300,
                     ),
@@ -217,7 +217,7 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TextView(
-                      text: 'Valor total a pagar',
+                      text: 'Total Amount to Pay',
                       fontSize: 16,
                       fontWeight: FontWeight.w900,
                     ),
@@ -230,13 +230,13 @@ class _CreditSimulatorFormState extends State<CreditSimulatorForm> {
                 ),
                 const SizedBox(height: 7.5),
                 const TextView(
-                  text: '(capital = intereses = seguro)',
+                  text: '(principal = interest = insurance)',
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
                 const SizedBox(height: 12),
                 CustomButton(
-                  text: 'Continuar',
+                  text: 'Continue',
                   onPressed: () {
                     _showLoadingModal(context);
 

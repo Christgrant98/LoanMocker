@@ -13,7 +13,7 @@ import 'xmark_button.dart';
 
 class CreditHistoryContent extends StatelessWidget {
   const CreditHistoryContent({
-    super.key,
+    Key? key,
   });
 
   @override
@@ -31,7 +31,7 @@ class CreditHistoryContent extends StatelessWidget {
         Center(
           child: RichText(
             text: const TextSpan(
-              text: 'No hay mas datos por mostrar ',
+              text: 'No more data to show ',
               style: TextStyle(
                   fontFamily: 'ProductSans',
                   color: Color.fromARGB(255, 177, 177, 177),
@@ -77,10 +77,10 @@ class CreditHistoryContent extends StatelessWidget {
     final rows = <TableRow>[
       TableRow(
         children: [
-          _buildTableCell(text: 'Monto de Crédito'),
-          _buildTableCell(text: 'No. de Cuotas'),
-          _buildTableCell(text: 'Interés'),
-          _buildTableCell(text: 'Acciones'),
+          _buildTableCell(text: 'Loan Amount'),
+          _buildTableCell(text: 'Number of Installments'),
+          _buildTableCell(text: 'Interest'),
+          _buildTableCell(text: 'Actions'),
         ],
       ),
     ];
@@ -117,7 +117,7 @@ class CreditHistoryContent extends StatelessWidget {
                     showModalBottomSheet(
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      barrierColor: Colors.black54,
+                      barrierColor: Colors.black38,
                       constraints: const BoxConstraints(),
                       context: context,
                       builder: (context) {
@@ -148,6 +148,7 @@ class CreditHistoryContent extends StatelessWidget {
     Loan currentLoan = loans[selectedIndex];
 
     return CustomModalBottomSheet(
+      blurredIdx: 0,
       height: 300,
       content: Padding(
         padding: const EdgeInsets.all(12),
@@ -155,7 +156,7 @@ class CreditHistoryContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const TextView(
-              text: 'Acciones de la Tabla',
+              text: 'Table Actions',
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -168,7 +169,7 @@ class CreditHistoryContent extends StatelessWidget {
             const SizedBox(height: 25),
             CustomButton(
               isAppColor: false,
-              text: 'Ver Contenido',
+              text: 'View Content',
               onPressed: () {
                 showDialog(
                     barrierColor: const Color.fromARGB(134, 0, 70, 97),
@@ -189,7 +190,7 @@ class CreditHistoryContent extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 10),
                                     child: TextView(
                                       text:
-                                          'Contenido de Credito #${selectedIndex + 1}',
+                                          'Credit Content #${selectedIndex + 1}',
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
@@ -214,7 +215,7 @@ class CreditHistoryContent extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             CustomButton(
-              text: 'Descargar Tabla',
+              text: 'Download Table',
               onPressed: () => Navigator.of(context).pop(),
             ),
             const SizedBox(height: 10),
@@ -245,14 +246,14 @@ class CreditHistoryContent extends StatelessWidget {
       children: [
         TextView(
           fontWeight: FontWeight.bold,
-          text: 'Historial de Créditos',
+          text: 'Credit History',
           fontSize: 25,
         ),
         SizedBox(height: 20),
         TextView(
           fontWeight: FontWeight.w300,
           text:
-              'Aqui encontraras tu historial de creditos y el registro de todas tus simulaiones',
+              'Here you will find your credit history and the record of all your simulations',
           fontSize: 18,
         ),
         SizedBox(height: 5),

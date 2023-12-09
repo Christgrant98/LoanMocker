@@ -1,3 +1,4 @@
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/models/loan.dart';
@@ -26,27 +27,27 @@ class SimulatorTable extends StatelessWidget {
     for (int i = 0; i < 6; i++) {
       if (i == 0) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Saldo inicial'),
+          _buildTableCellHeader(text: 'Initial Balance'),
         );
       } else if (i == 1) {
         headerCells.add(
-          _buildTableCellHeader(text: 'No. cuotas'),
+          _buildTableCellHeader(text: '# of Installments'),
         );
       } else if (i == 2) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Cuota'),
+          _buildTableCellHeader(text: 'Installment'),
         );
       } else if (i == 3) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Intereses'),
+          _buildTableCellHeader(text: 'Interest'),
         );
       } else if (i == 4) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Abono Capital'),
+          _buildTableCellHeader(text: 'Principal Payment'),
         );
       } else if (i == 5) {
         headerCells.add(
-          _buildTableCellHeader(text: 'Saldo periodo'),
+          _buildTableCellHeader(text: 'Periodic Balance'),
         );
       }
     }
@@ -76,7 +77,7 @@ class SimulatorTable extends StatelessWidget {
           cells.add(
             TableCell(
                 child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               child: TextView(
                 text: loanTerm.toString(),
                 fontSize: 8,
@@ -133,11 +134,11 @@ class SimulatorTable extends StatelessWidget {
   }) {
     return TableCell(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(9.0),
         child: Center(
           child: TextView(
             fontWeight: FontWeight.bold,
-            fontSize: 10,
+            fontSize: 7.5,
             textAlign: TextAlign.center,
             text: text,
           ),
@@ -156,5 +157,18 @@ class SimulatorTable extends StatelessWidget {
         color: Color.fromARGB(255, 220, 224, 227),
       ),
     );
+  }
+
+  void exportToExcel() {
+    final excel = Excel.createExcel();
+    final sheet = excel.sheets[excel.getDefaultSheet() as String];
+
+    sheet?.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 2)).value =
+        'Txt for test';
+
+    sheet?.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 2)).value =
+        'Txt for test nombe 2';
+
+    excel.save();
   }
 }

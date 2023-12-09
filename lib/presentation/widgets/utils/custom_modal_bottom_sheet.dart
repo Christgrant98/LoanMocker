@@ -5,18 +5,20 @@ import 'package:flutter/material.dart';
 class CustomModalBottomSheet extends StatelessWidget {
   final double? height;
   final Widget content;
+  final double? blurredIdx;
   const CustomModalBottomSheet({
     super.key,
     required this.content,
     this.height,
+    this.blurredIdx,
   });
 
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
       filter: ImageFilter.blur(
-        sigmaX: 5.0,
-        sigmaY: 5.0,
+        sigmaX: blurredIdx ?? 5,
+        sigmaY: blurredIdx ?? 5,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,7 +35,7 @@ class CustomModalBottomSheet extends StatelessWidget {
             height: 10,
           ),
           Container(
-            height: height ?? MediaQuery.of(context).size.height * .5,
+            height: height ?? MediaQuery.of(context).size.height * .55,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
